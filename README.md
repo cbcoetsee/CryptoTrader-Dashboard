@@ -1,4 +1,4 @@
-# Bar Replay — Setup Research Dashboard
+# Crypto Trading Dashboard
 
 A local, offline-first research dashboard for the `35A - Bar Replay.xlsx` trade
 journal. Everything runs in your browser — no data ever leaves your device,
@@ -85,6 +85,16 @@ default it's auto-detected from the workbook (or defaults to $0 / cumulative
 P&L if no balance column is found) — type your own value to see the equity
 curve, ending balance, and drawdown recalculated against it, and click
 **Auto-detect** to go back to the inferred value.
+
+## Deploying to Netlify (shared, password-protected, access anywhere)
+
+Want to open this dashboard from your phone and laptop with the same trade
+data on both, behind a password? See **`DEPLOY_NETLIFY.md`** in the
+`bar-replay-dashboard-netlify` package — it adds a password gate and a
+small shared-data backend (Netlify Functions + Blobs) on top of this same
+dashboard, so every device reads and writes the same trades. Everything
+described above still works unchanged when the file is just opened locally
+instead — the cloud sync only activates when it's actually deployed there.
 
 ## Live auto-refresh (optional)
 

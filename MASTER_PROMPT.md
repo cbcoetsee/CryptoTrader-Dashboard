@@ -1,8 +1,8 @@
 # Master Prompt — Crypto Trading Setup-Research Dashboard
 
-Use this prompt to (re)build the Bar Replay setup-research dashboard from
-scratch, or to brief another AI assistant on the same project. It assumes
-you're starting from a trade-journal Excel workbook similar in spirit to
+Use this prompt to (re)build the Crypto Trading Dashboard from scratch, or
+to brief another AI assistant on the same project. It assumes you're
+starting from a trade-journal Excel workbook similar in spirit to
 `35A - Bar Replay.xlsx` (an Elliott-wave crypto trade log with a header row,
 one row per trade, dropdown-validated categorical columns, and a numeric P&L
 column) — the dashboard should not hard-code that exact schema, but the
@@ -241,6 +241,62 @@ manually set.
 - Falling back gracefully when no server is present (plain file mode still
   works fully, just without auto-refresh; a small status-bar hint suggests
   the launcher for that capability).
+
+## 7a. Optional: password-gated deployment with a shared source of truth
+
+As an alternative to the plain local-file experience, support deploying the
+same dashboard behind a password, with trade data shared and kept in sync
+across every device that logs in — without changing anything about how the
+plain local file behaves when opened directly.
+
+- **Edge-level password gate**: put an edge/serverless function in front of
+  *every* request to the site (pages, static assets, and any API routes) that
+  checks a session cookie and, if missing or invalid, serves a login form
+  instead of the requested resource. Derive the session token deterministically
+  from the configured password (e.g. a salted hash) rather than storing the
+  raw password in the cookie. Fail closed: if no password has been configured
+  at all, refuse to serve anything rather than risk leaving the site open.
+  State plainly to whoever deploys this that a single shared password checked
+  at the edge is meant to keep a personal tool away from casual visitors and
+  search engines — not to withstand a targeted attacker — so they can judge
+  whether that's an acceptable trade-off for their data.
+- **Shared-state API**: a small serverless function backed by a key-value
+  store, exposing just enough surface for the whole app (GET the current
+  shared payload, PUT to replace it). The dashboard's existing local
+  save/restore logic (records + meta + starting-balance override, as one
+  JSON payload) is the right shape to reuse here unchanged — treat "shared
+  cloud store" as just another place that same payload can live, not a
+  reason to redesign the data model.
+- **Self-detecting activation**: the dashboard should probe for this API on
+  startup and adapt automatically — if it responds, treat the shared store as
+  authoritative (load it, or seed it from the embedded snapshot if it's
+  empty) and skip the local-storage-restore/offline-conflict logic entirely;
+  if it doesn't respond (opened as a plain local file, or deployed without
+  the API), fall back to the exact local-only behavior that already exists.
+  One codebase, two modes, chosen automatically per deployment — never a
+  separate build.
+- **Every mutation syncs automatically, from one place**: route all
+  "this dataset is now the truth" moments (a fresh import, a reset, a
+  column-detection correction, an add/edit/delete/clear) through a single
+  function that also pushes to the shared store when it's active, rather
+  than requiring each call site to remember to sync. A caller forgetting
+  a sync call is a real, easy-to-introduce bug — design it out structurally
+  instead of relying on every future call site getting it right.
+- **Keep large attachments out of the synced payload**: if trades can carry
+  an image/attachment field, strip freshly-added attachments (not small
+  pre-existing file-path references) out of what gets sent to the shared
+  store specifically, even though they're kept in full for local caching.
+  Serverless function request bodies have real size ceilings (typically
+  single-digit megabytes), and a personal trade journal can easily accumulate
+  attachments that blow past that — degrade gracefully (attachment stays on
+  the device that added it; trade data still syncs) rather than letting a
+  large attachment silently break syncing for everything else. Log the real
+  failure reason when a sync does fail, rather than swallowing it, so it's
+  diagnosable.
+- **Visible sync status**: surface whether shared sync is active and its
+  current state (synced / syncing / failed) somewhere persistent like a
+  status bar, so the person always knows whether what they're looking at
+  is genuinely shared or just a local view.
 
 ## 8. Usability
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-<title>Bar Replay · Setup Research Dashboard</title>
+<title>Crypto Trading Dashboard</title>
 <style>
 /* ============================================================
    DESIGN TOKENS
@@ -462,8 +462,7 @@ footer.app-footer{
     <div class="brand">
       <div class="brand-mark">BR</div>
       <div class="brand-text">
-        <span class="brand-title">Bar Replay — Setup Research</span>
-        <span class="brand-sub">Elliott-wave trade journal · local-only</span>
+        <span class="brand-title">Crypto Trading Dashboard</span>
       </div>
     </div>
     <div class="topbar-actions">
@@ -1730,6 +1729,8 @@ const state = {
   banners: [],
   hasManualEdits: false,
   startingBalanceOverride: null, // null = auto-detect from workbook; a number = user-configured
+  cloudSyncAvailable: false, // true once /api/trades responds (Netlify deployment w/ the trades Function)
+  syncStatus: null, // null | 'synced' | 'syncing' | 'error'
   setup: {
     mode: 'single', // 'single' | 'signature'
     single: { fields: null, search: '', sortKey: 'totalPnl', sortDir: 'desc', minTrades: 1 },
@@ -1800,12 +1801,11 @@ function validateDataset(dataset) {
   return warnings;
 }
 
-function setDataset(dataset, sourceInfo) {
+function setDataset(dataset, sourceInfo, opts) {
   injectSyntheticFields(dataset);
   state.dataset = dataset;
   state.sourceMeta = { ...state.sourceMeta, ...sourceInfo, lastRefresh: new Date() };
   state.banners = validateDataset(dataset).map((w, i) => ({ id: 'v' + i, ...w }));
-  // reset per-dataset selections to sensible defaults tied to available fields
   const factorFields = dataset.meta.factorFields;
   state.setup.single.fields = new Set(factorFields);
   state.setup.signature.fields = pickDefaultSignatureFields(factorFields);
@@ -1815,6 +1815,7 @@ function setDataset(dataset, sourceInfo) {
   state.ledger.dateTo = null;
   state.ledger.search = '';
   renderAll();
+  if (state.cloudSyncAvailable && !(opts && opts.skipCloudPush)) pushSharedState();
 }
 
 function pickDefaultSignatureFields(factorFields) {
@@ -1837,9 +1838,9 @@ function renderStatusBar() {
   const el = document.getElementById('statusBar');
   const m = state.dataset.meta;
   const sm = state.sourceMeta;
-  const modeLabel = sm.mode === 'server' ? 'Live server' : sm.mode === 'uploaded' ? 'Uploaded file' : 'Embedded sample';
-  const modePillClass = sm.mode === 'server' ? 'live' : 'file';
-  const dotClass = sm.mode === 'server' ? 'live' : '';
+  const modeLabel = sm.mode === 'cloud' ? 'Shared (cloud)' : sm.mode === 'server' ? 'Live server' : sm.mode === 'uploaded' ? 'Uploaded file' : 'Embedded sample';
+  const modePillClass = sm.mode === 'cloud' || sm.mode === 'server' ? 'live' : 'file';
+  const dotClass = sm.mode === 'cloud' || sm.mode === 'server' ? 'live' : '';
   const refreshStr = sm.lastRefresh ? sm.lastRefresh.toLocaleTimeString('en-US', { hour12: false }) : '—';
   el.innerHTML = `
     <div class="status-item"><span class="status-dot ${dotClass}"></span><span class="mode-pill ${modePillClass}">${modeLabel}</span></div>
@@ -1851,7 +1852,11 @@ function renderStatusBar() {
     <div class="status-item" id="serverSyncNote"></div>
   `;
   const syncNote = document.getElementById('serverSyncNote');
-  if (state.serverPoll.active) {
+  if (state.cloudSyncAvailable) {
+    const dotCls = state.syncStatus === 'syncing' ? 'warn' : state.syncStatus === 'error' ? 'err' : 'live';
+    const label = state.syncStatus === 'syncing' ? 'Syncing…' : state.syncStatus === 'error' ? 'Sync failed — saved locally only' : 'Synced across your devices';
+    syncNote.innerHTML = `<span class="status-dot ${dotCls}" style="margin-right:2px;"></span><span class="status-value">${esc(label)}</span>`;
+  } else if (state.serverPoll.active) {
     syncNote.innerHTML = `<span class="status-label">Watching</span><span class="status-value">data/${esc(state.serverPoll.manifestFile || '')}</span>`;
   } else if (location.protocol === 'file:') {
     syncNote.innerHTML = `<span class="status-label">Tip</span><span class="status-value">run the launcher for live auto-refresh</span>`;
@@ -2616,6 +2621,7 @@ function wireStartingBalanceControl() {
       if (Number.isFinite(n)) state.startingBalanceOverride = n;
     }
     persistWorkingState();
+    if (state.cloudSyncAvailable) pushSharedState();
     renderEquityTab();
     renderKpis();
   });
@@ -2623,6 +2629,7 @@ function wireStartingBalanceControl() {
     autoBtn.addEventListener('click', () => {
       state.startingBalanceOverride = null;
       persistWorkingState();
+      if (state.cloudSyncAvailable) pushSharedState();
       renderEquityTab();
       renderKpis();
     });
@@ -3064,8 +3071,98 @@ function wireLedgerEvents() {
 /* ============================================================
    BOOTSTRAP
    ============================================================ */
+/* ============================================================
+   CLOUD SYNC (shared source of truth across devices)
+   ============================================================
+   This entire layer is optional and self-detecting: it only activates when
+   an `/api/trades` endpoint actually responds (i.e. this copy of the
+   dashboard was deployed to Netlify with the companion Function — see
+   netlify/functions/trades.mjs). Opened as a plain local file, or served
+   without that Function, every call here fails harmlessly and the app
+   falls straight back to the local-only behavior it already had
+   (localStorage + the embedded snapshot) — nothing about that path changes.
+*/
+
+const CLOUD_API = '/api/trades';
+
+// undefined  = haven't checked yet / endpoint unreachable (stay local-only)
+// null       = endpoint reachable, nothing saved there yet
+// object     = the shared payload, in the same shape buildPersistPayload() produces
+async function tryFetchSharedState() {
+  try {
+    const res = await fetch(CLOUD_API, { cache: 'no-store' });
+    if (!res.ok) return undefined;
+    const text = await res.text();
+    if (!text || text === 'null') return null;
+    return JSON.parse(text);
+  } catch (e) {
+    return undefined;
+  }
+}
+
+async function pushSharedState() {
+  if (!state.cloudSyncAvailable) return;
+  state.syncStatus = 'syncing';
+  renderStatusBar();
+  try {
+    const res = await fetch(CLOUD_API, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(buildPersistPayload({ stripImages: true })),
+    });
+    if (res.ok) {
+      state.syncStatus = 'synced';
+    } else {
+      state.syncStatus = 'error';
+      const text = await res.text().catch(() => '');
+      console.error('[cloud-sync] push failed:', res.status, text);
+    }
+  } catch (e) {
+    state.syncStatus = 'error';
+    console.error('[cloud-sync] push failed:', e);
+  }
+  renderStatusBar();
+}
+
+/**
+ * Called once at startup. Returns true if cloud sync is active (caller
+ * should skip the legacy local-storage-restore / server-polling paths),
+ * false if it should fall back to the existing local-only bootstrap.
+ */
+async function tryBootstrapFromCloud() {
+  const shared = await tryFetchSharedState();
+  if (shared === undefined) {
+    state.cloudSyncAvailable = false;
+    return false;
+  }
+
+  state.cloudSyncAvailable = true;
+  state.syncStatus = 'synced';
+
+  if (shared && shared.dataset) {
+    state.startingBalanceOverride = shared.startingBalanceOverride ?? null;
+    state.hasManualEdits = false;
+    setDataset(reviveDataset(shared.dataset), {
+      mode: shared.sourceMeta?.mode || 'cloud',
+      fileName: shared.sourceMeta?.fileName || 'Shared trade data',
+    }, { skipCloudPush: true });
+  } else {
+    const snap = JSON.parse(JSON.stringify(EMBEDDED_SNAPSHOT_RAW));
+    setDataset(reviveDataset(snap), { mode: 'cloud', fileName: snap.meta.fileName });
+  }
+  return true;
+}
+
 async function bootstrap() {
   wireStaticEvents();
+
+  const cloudActive = await tryBootstrapFromCloud();
+  if (cloudActive) {
+    switchTab('setup');
+    renderStatusBar();
+    return; // shared cloud state is authoritative — skip the local-only paths entirely
+  }
+
   const saved = loadWorkingState();
   if (saved) {
     state.startingBalanceOverride = saved.startingBalanceOverride ?? null;
@@ -3640,6 +3737,7 @@ function afterMutation() {
   reconcileSetupFieldSelections();
   state.hasManualEdits = true;
   persistWorkingState();
+  if (state.cloudSyncAvailable) pushSharedState();
   renderAll();
 }
 
@@ -3675,20 +3773,31 @@ function clearAllTrades() {
    ============================================================ */
 const STORAGE_KEY = 'barReplayDashboard.workingState.v1';
 
+function buildPersistPayload(opts) {
+  const stripImages = !!(opts && opts.stripImages);
+  const records = state.dataset.records.map((r) => {
+    const copy = { ...r };
+    if (copy._date instanceof Date) copy._date = copy._date.toISOString();
+    if (stripImages) {
+      for (const key in copy) {
+        if (typeof copy[key] === 'string' && copy[key].startsWith('data:image')) {
+          copy[key] = null;
+        }
+      }
+    }
+    return copy;
+  });
+  return {
+    savedAt: new Date().toISOString(),
+    sourceMeta: { mode: state.sourceMeta.mode, fileName: state.sourceMeta.fileName },
+    startingBalanceOverride: state.startingBalanceOverride,
+    dataset: { meta: state.dataset.meta, records },
+  };
+}
+
 function persistWorkingState() {
   try {
-    const records = state.dataset.records.map((r) => {
-      const copy = { ...r };
-      if (copy._date instanceof Date) copy._date = copy._date.toISOString();
-      return copy;
-    });
-    const payload = {
-      savedAt: new Date().toISOString(),
-      sourceMeta: { mode: state.sourceMeta.mode, fileName: state.sourceMeta.fileName },
-      startingBalanceOverride: state.startingBalanceOverride,
-      dataset: { meta: state.dataset.meta, records },
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(buildPersistPayload()));
   } catch (e) {
     // Storage unavailable (private browsing, strict file:// policies, quota) —
     // edits simply won't survive a page refresh; the app still works fine.
