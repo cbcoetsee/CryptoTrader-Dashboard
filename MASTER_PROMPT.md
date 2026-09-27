@@ -87,6 +87,23 @@ maintain the ledger by hand (add/edit/delete trades) going forward.
   side parsing only).
 - Validate the imported workbook and handle missing/ambiguous columns
   gracefully with clear banners — never a blank screen or a silent crash.
+- When a workbook has more than one sheet, don't default to the largest or
+  the first — a workbook can easily grow extra "Stats"/"Analysis"/"Summary"
+  tabs alongside the real log, and a derived breakdown table on one of those
+  can have as many or more rows than the actual trade log without being one.
+  Prefer a sheet literally named like a trade log; failing that, prefer
+  sheets *not* named like a derived summary/analysis tab; only within that
+  narrowed pool should raw row count and "has a plausible P&L-looking
+  column" break the tie — and when checking for a plausible P&L column,
+  require many numeric values actually running down it (not just a header
+  whose text merely contains "P&L", which a summary sheet's own labels can
+  trigger too).
+- When deciding whether a numeric cell is really a date (from its cell
+  format string), strip bracketed directives (`[Red]`, locale/condition
+  codes) and quoted literal text (a quoted currency symbol, say) before
+  checking for date-format letters — a perfectly ordinary currency format
+  can otherwise false-positive as a date purely because a color name or
+  symbol happens to contain the letter y/m/d/h.
 
 ## 4. Dashboard scope
 
@@ -144,10 +161,14 @@ like a living trade journal, not a read-only report.
 - **Add Trade**: a form built dynamically from the current dataset's schema
   (don't hard-code field names) — but laid out in a specific, curated order
   rather than raw column order, since that reads much more naturally than a
-  spreadsheet-column dump: date first, then a calculated risk-sizing figure
-  (see below), then token/direction, then every setup factor, then the
-  "result" fields grouped together at the end (any pass/fail outcome field,
-  the win/loss/breakeven field, P&L, P&L%, and the chart screenshot last).
+  spreadsheet-column dump: date first, then any calculated risk-sizing
+  fields (see §5a), then token/direction, then every setup factor, then the
+  "result" fields grouped together (any pass/fail outcome field, the
+  win/loss/breakeven field, P&L, P&L%, and the chart screenshot), then any
+  calculated account-tracking fields last (see §5a). Available from more
+  than one place — e.g. a persistent button in the top bar in addition to
+  wherever the trade ledger itself lives — since adding a trade is common
+  enough to not require navigating to a specific tab first.
   For every field that has a workbook dropdown list (extracted per §3),
   render a real `<select>` with those exact options. For other categorical
   fields, offer the currently-observed distinct values as a dropdown plus an
@@ -160,16 +181,9 @@ like a living trade journal, not a read-only report.
   drop genuinely low-value fields (workbook-internal running totals/averages,
   the blank formatting-artifact columns from §3) from the form entirely
   rather than hiding them behind a low-value "optional" disclosure.
-- **A calculated risk-sizing field** (e.g. "Trade Risk" = a fixed percentage
-  of account balance): computed automatically, shown read-only right after
-  the date, and snapshotted onto the record when the trade is saved so it
-  stays a historically accurate fact even as the account balance moves later.
-  Use the current overall ending balance when adding a new trade; use the
-  balance that existed immediately *before* that specific trade in the
-  chronological sequence when editing an existing one.
 - **Any field that's mathematically derived from another visible field**
   (e.g. a P&L-percentage field, which is always P&L relative to the same
-  balance basis the risk-sizing field uses) should be calculated and
+  balance basis a risk-sizing field uses) should be calculated and
   read-only too, not a second manually-typed number that can drift out of
   sync with the first — and it should recalculate live as the person edits
   the field it depends on, not just once when the form opens.
@@ -218,6 +232,76 @@ like a living trade journal, not a read-only report.
   browser contexts where local storage isn't available, such as some
   browsers when a page is opened directly as a local file rather than served
   over http.
+
+## 5a. Dynamic position sizing and a Holding sub-account (optional, workbook-driven)
+
+Some workbooks size each trade and protect profits through a chain of
+formulas rather than a flat rule — replicate that chain exactly rather than
+approximating it, and validate the replication against the workbook's own
+computed values (every row, every field) before trusting it for anything
+new.
+
+- The chain typically looks like: **Trade Amount** (this trade's size) =
+  the *previous* trade's Trade Acct Balance × the *previous* trade's Risk
+  %; **Trade Acct Balance** = total Account Balance minus whatever's
+  currently in a separate Holding sub-account; **Risk Next Trade** = a base
+  risk % that steps up for every full multiple of some growth threshold the
+  account has cleared; **Account Balance** = running cumulative balance
+  (previous balance + this trade's P&L — the same value the equity curve
+  already computes, so derive it from that rather than re-deriving it a
+  second, potentially inconsistent way); **Account Growth** = current
+  balance vs. the starting balance. A Holding sub-account can layer on top:
+  crossing set growth milestones sweeps a fraction of the starting balance
+  into Holding (a one-time event exactly at the crossing, not a sticky
+  "have we ever crossed" flag — if the balance dips back below a milestone
+  and re-crosses it later, that fires again, matching a literal formula
+  read rather than an intuited "only once" version), an ongoing skim takes
+  a fraction of each win once past the last milestone, and a loss pulls
+  money back out of Holding (up to what's available) to cover it.
+- Implement the whole per-trade step as a single pure function of "the
+  state left over from the trade before" (previous Trade Acct Balance,
+  previous Risk %, previous Account Balance, previous Holding Balance) plus
+  this trade's P&L. Reuse that *one* function for three different
+  situations rather than writing the logic three times: replaying full
+  history in chronological order, previewing a brand-new trade against the
+  latest overall state, and previewing an edit to a historical trade
+  against the state that existed immediately before it. All of these
+  calculated fields are derived, not raw source data — recompute and
+  overwrite them from this replay after every load and every mutation
+  rather than trusting whatever the sheet's own columns say, the same way
+  an independently-computed equity curve isn't trusted from the sheet's own
+  running-balance column.
+- Surface every field this chain produces as its own labeled field (not
+  folded into hints on other fields), positioned the same way the source
+  workbook orders them: the sizing fields (Trade Amount, Risk Next Trade,
+  Trade Acct Balance) go right after the date, ahead of setup criteria; the
+  account-level fields (the Holding transfers, Holding Balance, Account
+  Balance, Account Growth) go after the result cluster. All are read-only
+  and recalculate live as P&L is typed — including in edit mode, where they
+  should preview against that trade's own historical prior-state basis, not
+  the latest overall state.
+- A field that already existed before this feature (e.g. a P&L-as-percent
+  field) may need its basis reconsidered once a Holding split exists —
+  relative to the capital actually being traded (Trade Acct Balance), not
+  the total balance including money that's set aside and untouchable.
+- Any column the source workbook already uses these exact names for must
+  still be excluded from generic "setup factor" classification — don't rely
+  solely on a synthetic-field-injection step to mark this, since injection
+  is a no-op for a header that already exists in that exact workbook (it
+  only adds headers that are missing); the exclusion needs to live in the
+  same general-purpose classifier every column goes through, so it applies
+  whether the workbook already has these columns or not.
+- Make every rule/threshold in the chain (the base risk, the growth needed
+  per risk step, each milestone's trigger and transfer amount, the ongoing
+  skim %) an editable setting, defaulting to whatever the workbook's own
+  formulas currently encode. Changing a setting is a "what if" recompute of
+  the full trade history for display purposes only — it never rewrites the
+  person's original workbook — and should say so where the control lives.
+- Where the dashboard already shows a single running-balance chart, add a
+  view of the sizing-relevant split (e.g. the trade-capital sub-balance
+  stacked with the Holding sub-balance) so their combined height still
+  reads as the total balance, alongside — not instead of — whatever
+  aggregate metric already existed.
 
 ## 6. Configurable starting balance
 

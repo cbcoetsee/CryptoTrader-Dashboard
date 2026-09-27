@@ -417,6 +417,18 @@ tbody tr.clickable{cursor:pointer;}
 .chart-tooltip .t-date{color:var(--text-3); font-size:10.5px; margin-bottom:3px; font-family:var(--font-mono);}
 .chart-tooltip .t-row{display:flex; justify-content:space-between; gap:14px; font-family:var(--font-mono);}
 
+.legend{display:flex; gap:16px; flex-wrap:wrap; font-size:11.5px; color:var(--text-2);}
+.legend .dot{width:9px; height:9px; border-radius:2px; display:inline-block; margin-right:5px; vertical-align:middle;}
+
+.settings-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(200px,1fr)); gap:16px;}
+.settings-item{display:flex; flex-direction:column; gap:5px;}
+.settings-item label{font-size:11px; font-weight:700; color:var(--text-1);}
+.settings-desc{font-size:10.5px; color:var(--text-3); line-height:1.4; min-height:26px;}
+.settings-input{display:flex; align-items:center; gap:6px; font-family:var(--font-mono); font-size:12.5px; color:var(--text-2);}
+.settings-input input{width:64px; background:var(--bg-1); border:1px solid var(--border-strong); color:var(--amber-strong); border-radius:6px; padding:6px 8px; font-family:var(--font-mono); font-size:12.5px; text-align:right;}
+.settings-input input:focus{outline:none; border-color:var(--amber);}
+.settings-input span{color:var(--text-3);}
+
 .assumptions{
   font-size:12px; color:var(--text-2); background:var(--bg-1); border:1px dashed var(--border-strong);
   border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px;
@@ -466,8 +478,12 @@ footer.app-footer{
       </div>
     </div>
     <div class="topbar-actions">
+      <button class="btn btn-primary btn-sm" id="btnAddTradeGlobal">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+        Add Trade
+      </button>
       <button class="btn btn-ghost btn-sm" id="btnReset" title="Reload the embedded sample dataset">Reset to sample</button>
-      <button class="btn btn-primary btn-sm" id="btnUpload">
+      <button class="btn btn-ghost btn-sm" id="btnUpload">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
         Import .xlsx
       </button>
@@ -502,10 +518,23 @@ footer.app-footer{
   <div class="modal-overlay hidden" id="modalOverlay"></div>
 </div>
 
-<script id="embedded-snapshot" type="application/json">{"meta":{"fileName":"35A - Bar Replay.xlsx","sheetName":"Trade Log","headerRowExcelIndex":1,"scannedRows":1009,"recordCount":41,"usableRecordCount":40,"pnlField":"P&L","pnlFieldConfident":true,"dateField":"DATE","outcomeField":"P/ L/ BE","weekdayField":"Day of Week","columns":[{"header":"DATE","type":"date","nonBlankCount":41,"numericRatio":0,"distinctCount":33,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Previous Trade Loss","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Day of Week","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":7,"distinctValues":["FRI","MON","SAT","SUN","THU","TUE","WED"],"isFactorCandidate":true,"isMetricLike":false},{"header":"NY/LO Hours","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":3,"distinctValues":["LO","LOP","NY"],"isFactorCandidate":true,"isMetricLike":false},{"header":"TOKEN","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":13,"distinctValues":["ADA","AVAX","BNB","DOGE","ETH","HYPE","LINK","SOL","SUI","XLM","XRP","ZEC","ZECUS"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Major News passed hour","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"LONG/ SHORT","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["LONG","SHORT"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Trend Break","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave2 at","type":"categorical","nonBlankCount":40,"numericRatio":0.925,"distinctCount":6,"distinctValues":["0.236","0.382","0.5","0.618","0.786","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave3 at","type":"categorical","nonBlankCount":40,"numericRatio":0.775,"distinctCount":4,"distinctValues":["1.618","2.618","3.618","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Highlight on Wave3","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave4 at","type":"categorical","nonBlankCount":40,"numericRatio":0.85,"distinctCount":4,"distinctValues":["0.236","0.382","0.5","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave 4 End at wave 1 end","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":3,"distinctValues":["After","At","Before"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave5 at","type":"categorical","nonBlankCount":40,"numericRatio":0.85,"distinctCount":4,"distinctValues":["2.618","3.618","4.618","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Highlight on Wave5","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"RSI Divergences betweem 3 & 5","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - SMOG Indicator at Wave 5","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - COCH/BOS Between Wave 5 & A","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":3,"distinctValues":["BOS","CHoCH","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - COCH/BOS After Wave A","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":3,"distinctValues":["BOS","CHoCH","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - Bear Short / Bull Long FVG on Wave A","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave A beyond 3 and not passed 4","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave C at","type":"categorical","nonBlankCount":40,"numericRatio":0.725,"distinctCount":5,"distinctValues":["0.618","1","1.618","2.618","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"P/ L/ BE","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["L","P"],"isFactorCandidate":false,"isMetricLike":true},{"header":"Profit passed 1:3RR","type":"categorical","nonBlankCount":40,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":false,"isMetricLike":true},{"header":"P&L","type":"numeric","nonBlankCount":40,"numericRatio":1,"distinctCount":40,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"ACCOUNT SIZE","type":"numeric","nonBlankCount":41,"numericRatio":1,"distinctCount":41,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"P&L %","type":"numeric","nonBlankCount":41,"numericRatio":1,"distinctCount":41,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"CHART","type":"image","nonBlankCount":39,"numericRatio":0,"distinctCount":37,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Average PNL","type":"categorical","nonBlankCount":3,"numericRatio":0.3333333333333333,"distinctCount":3,"distinctValues":["0.01894713052","When Price cross Wave A - Move SL to below Wave B","When Price cross Wave C - Move SL to last CHoCH/BOS LL/HH in the direction of trend"],"isFactorCandidate":false,"isMetricLike":false},{"header":"Account Growth","type":"categorical","nonBlankCount":1,"numericRatio":1,"distinctCount":1,"distinctValues":["0.9782"],"isFactorCandidate":false,"isMetricLike":true},{"header":"Column AE","type":"categorical","nonBlankCount":1,"numericRatio":1,"distinctCount":1,"distinctValues":["1.9782"],"isFactorCandidate":false,"isMetricLike":false}],"factorFields":["Previous Trade Loss","Day of Week","NY/LO Hours","TOKEN","Major News passed hour","LONG/ SHORT","Trend Break","Wave2 at","Wave3 at","Highlight on Wave3","Wave4 at","Wave 4 End at wave 1 end","Wave5 at","Highlight on Wave5","RSI Divergences betweem 3 & 5","SMOG - SMOG Indicator at Wave 5","SMOG - COCH/BOS Between Wave 5 & A","SMOG - COCH/BOS After Wave A","SMOG - Bear Short / Bull Long FVG on Wave A","Wave A beyond 3 and not passed 4","Wave C at"],"headers":["DATE","Previous Trade Loss","Day of Week","NY/LO Hours","TOKEN","Major News passed hour","LONG/ SHORT","Trend Break","Wave2 at","Wave3 at","Highlight on Wave3","Wave4 at","Wave 4 End at wave 1 end","Wave5 at","Highlight on Wave5","RSI Divergences betweem 3 & 5","SMOG - SMOG Indicator at Wave 5","SMOG - COCH/BOS Between Wave 5 & A","SMOG - COCH/BOS After Wave A","SMOG - Bear Short / Bull Long FVG on Wave A","Wave A beyond 3 and not passed 4","Wave C at","P/ L/ BE","Profit passed 1:3RR","P&L","ACCOUNT SIZE","P&L %","CHART","Average PNL","Account Growth","Column AE"],"columnDropdowns":{"Wave C at":["1.618","2.618","1.0","No","0.618"],"TOKEN":["ADA","ATOM","AVAX","PAXG","SOL","LINK","LTC","SUI","ETH","HYPE","ZECUS","BNB","XLM","ZEC","DOGE","XRP"],"Wave4 at":["0.50","0.382","0.236","No"],"Wave5 at":["1.618","2.618","3.618","4.618","No"],"Wave 4 End at wave 1 end":["Before","At","After"],"Wave2 at":["0.236","0.382","0.5","0.618","0.786","No"],"P/ L/ BE":["P","BE","L"],"Wave3 at":["1.618","2.0","2.618","No","3.618"],"Previous Trade Loss":["Yes","No"],"Major News passed hour":["Yes","No"],"LONG/ SHORT":["LONG","SHORT"],"Trend Break":["Yes","No"],"Highlight on Wave3":["Yes","No"],"Highlight on Wave5":["Yes","No"],"RSI Divergences betweem 3 & 5":["Yes","No"],"SMOG - SMOG Indicator at Wave 5":["Yes","No"],"SMOG - Bear Short / Bull Long FVG on Wave A":["Yes","No"],"Wave A beyond 3 and not passed 4":["Yes","No"],"Profit passed 1:3RR":["Yes","No"],"SMOG - COCH/BOS Between Wave 5 & A":["CHoCH","BOS","No"],"SMOG - COCH/BOS After Wave A":["CHoCH","BOS","No"],"NY/LO Hours":["LOP","LO","NY"],"Day of Week":["MON","TUE","WED","THU","FRI","SAT","SUN"]}},"records":[{"_sourceRow":2,"DATE":"SUI - 26/05/04 7:30","Previous Trade Loss":null,"Day of Week":null,"NY/LO Hours":null,"TOKEN":null,"Major News passed hour":null,"LONG/ SHORT":null,"Trend Break":null,"Wave2 at":null,"Wave3 at":null,"Highlight on Wave3":null,"Wave4 at":null,"Wave 4 End at wave 1 end":null,"Wave5 at":null,"Highlight on Wave5":null,"RSI Divergences betweem 3 & 5":null,"SMOG - SMOG Indicator at Wave 5":null,"SMOG - COCH/BOS Between Wave 5 & A":null,"SMOG - COCH/BOS After Wave A":null,"SMOG - Bear Short / Bull Long FVG on Wave A":null,"Wave A beyond 3 and not passed 4":null,"Wave C at":null,"P/ L/ BE":null,"Profit passed 1:3RR":null,"P&L":null,"ACCOUNT SIZE":100,"P&L %":3.9564,"CHART":null,"Average PNL":0.01894713052,"Account Growth":0.9782,"Column AE":1.9782,"_pnl":null,"_hasUsablePnl":false,"_outcome":null,"_date":null,"_dateISO":null},{"_sourceRow":3,"DATE":"26/05/15","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"Yes","P&L":-2,"ACCOUNT SIZE":98,"P&L %":-0.02,"CHART":"data/charts/row-3.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-05-15T00:00:00.000Z","_dateISO":"2026-05-15"},{"_sourceRow":4,"DATE":"26/05/25","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"NY","TOKEN":"AVAX","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":5.03,"ACCOUNT SIZE":103.03,"P&L %":0.05132653061,"CHART":"data/charts/row-4.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":5.03,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-05-25T00:00:00.000Z","_dateISO":"2026-05-25"},{"_sourceRow":5,"DATE":"26/06/05","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"AVAX","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"No","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-1,"ACCOUNT SIZE":102.03,"P&L %":-0.0097059109,"CHART":null,"Average PNL":"When Price cross Wave A - Move SL to below Wave B","Account Growth":null,"Column AE":null,"_pnl":-1,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-05T00:00:00.000Z","_dateISO":"2026-06-05"},{"_sourceRow":6,"DATE":"26/06/07","Previous Trade Loss":"No","Day of Week":"THU","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"No","Wave2 at":"0.382","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-0.63,"ACCOUNT SIZE":101.4,"P&L %":-0.006174654513,"CHART":"data/charts/row-6.png","Average PNL":"When Price cross Wave C - Move SL to last CHoCH/BOS LL/HH in the direction of trend","Account Growth":null,"Column AE":null,"_pnl":-0.63,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-07T00:00:00.000Z","_dateISO":"2026-06-07"},{"_sourceRow":7,"DATE":"26/06/08","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":3.9,"ACCOUNT SIZE":105.3,"P&L %":0.03979591837,"CHART":"data/charts/row-7.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":3.9,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-08T00:00:00.000Z","_dateISO":"2026-06-08"},{"_sourceRow":8,"DATE":"26/06/14","Previous Trade Loss":"No","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":8.04,"ACCOUNT SIZE":113.34,"P&L %":0.0804,"CHART":"data/charts/row-8.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":8.04,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-14T00:00:00.000Z","_dateISO":"2026-06-14"},{"_sourceRow":9,"DATE":"26/06/16","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":3.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.23,"ACCOUNT SIZE":111.11,"P&L %":-0.02275510204,"CHART":"data/charts/row-9.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.23,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-16T00:00:00.000Z","_dateISO":"2026-06-16"},{"_sourceRow":10,"DATE":"26/06/24","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":5.94,"ACCOUNT SIZE":117.05,"P&L %":0.05240868184,"CHART":"data/charts/row-10.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":5.94,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-24T00:00:00.000Z","_dateISO":"2026-06-24"},{"_sourceRow":11,"DATE":"26/06/22","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LOP","TOKEN":"ZECUS","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":5.2,"ACCOUNT SIZE":122.25,"P&L %":0.04442545921,"CHART":"data/charts/row-11.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":5.2,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-22T00:00:00.000Z","_dateISO":"2026-06-22"},{"_sourceRow":12,"DATE":"26/06/23","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"BNB","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"No","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":4.4,"ACCOUNT SIZE":126.65,"P&L %":0.03599182004,"CHART":"data/charts/row-12.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":4.4,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-23T00:00:00.000Z","_dateISO":"2026-06-23"},{"_sourceRow":13,"DATE":"26/06/25","Previous Trade Loss":"No","Day of Week":"THU","NY/LO Hours":"NY","TOKEN":"BNB","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.53,"ACCOUNT SIZE":124.12,"P&L %":-0.01997631267,"CHART":"data/charts/row-13.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.53,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-25T00:00:00.000Z","_dateISO":"2026-06-25"},{"_sourceRow":14,"DATE":"26/06/30","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"ADA","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-0.65,"ACCOUNT SIZE":123.47,"P&L %":-0.005236867548,"CHART":"data/charts/row-14.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-0.65,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-30T00:00:00.000Z","_dateISO":"2026-06-30"},{"_sourceRow":15,"DATE":"26/07/01","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"AVAX","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":5.55,"ACCOUNT SIZE":129.02,"P&L %":0.04471479214,"CHART":"data/charts/row-15.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":5.55,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-01T00:00:00.000Z","_dateISO":"2026-07-01"},{"_sourceRow":16,"DATE":"26/07/01","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"No","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.58,"ACCOUNT SIZE":126.44,"P&L %":-0.0207863358,"CHART":"data/charts/row-16.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.58,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-01T00:00:00.000Z","_dateISO":"2026-07-01"},{"_sourceRow":17,"DATE":"26/07/01","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"XLM","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":0.39,"ACCOUNT SIZE":126.83,"P&L %":0.003084466941,"CHART":"data/charts/row-17.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":0.39,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-01T00:00:00.000Z","_dateISO":"2026-07-01"},{"_sourceRow":18,"DATE":"26/07/03","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"ZECUS","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"No","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.54,"ACCOUNT SIZE":124.29,"P&L %":-0.02002680754,"CHART":"data/charts/row-18.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.54,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-03T00:00:00.000Z","_dateISO":"2026-07-03"},{"_sourceRow":19,"DATE":"26/07/05","Previous Trade Loss":"No","Day of Week":"SUN","NY/LO Hours":"LOP","TOKEN":"DOGE","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":12.58,"ACCOUNT SIZE":136.87,"P&L %":0.1012149006,"CHART":"data/charts/row-19.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":12.58,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-05T00:00:00.000Z","_dateISO":"2026-07-05"},{"_sourceRow":20,"DATE":"26/07/06","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"LINK","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-1.23,"ACCOUNT SIZE":135.64,"P&L %":-0.008986629649,"CHART":"data/charts/row-20.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-1.23,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-06T00:00:00.000Z","_dateISO":"2026-07-06"},{"_sourceRow":21,"DATE":"26/07/06","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"DOGE","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":1.74,"ACCOUNT SIZE":137.38,"P&L %":0.01282807431,"CHART":"data/charts/row-21.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":1.74,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-06T00:00:00.000Z","_dateISO":"2026-07-06"},{"_sourceRow":22,"DATE":"26/07/07","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"No","Wave2 at":"0.5","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.75,"ACCOUNT SIZE":134.63,"P&L %":-0.02001746979,"CHART":"data/charts/row-22.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.75,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-07T00:00:00.000Z","_dateISO":"2026-07-07"},{"_sourceRow":23,"DATE":"26/07/09","Previous Trade Loss":"No","Day of Week":"THU","NY/LO Hours":"LOP","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":8.76,"ACCOUNT SIZE":143.39,"P&L %":0.06506722127,"CHART":"data/charts/row-23.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":8.76,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-09T00:00:00.000Z","_dateISO":"2026-07-09"},{"_sourceRow":24,"DATE":"26/07/14","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"SOL","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":2.87,"ACCOUNT SIZE":146.26,"P&L %":0.02001534277,"CHART":"data/charts/row-24.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":2.87,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-14T00:00:00.000Z","_dateISO":"2026-07-14"},{"_sourceRow":25,"DATE":"26/07/14","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"SUI","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.05,"ACCOUNT SIZE":144.21,"P&L %":-0.01401613565,"CHART":"data/charts/row-25.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.05,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-14T00:00:00.000Z","_dateISO":"2026-07-14"},{"_sourceRow":26,"DATE":"26/07/15","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LO","TOKEN":"XRP","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.88,"ACCOUNT SIZE":141.33,"P&L %":-0.01997087581,"CHART":"data/charts/row-26.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.88,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-15T00:00:00.000Z","_dateISO":"2026-07-15"},{"_sourceRow":27,"DATE":"26/07/15","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"LINK","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"4.618","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":18.08,"ACCOUNT SIZE":159.41,"P&L %":0.1279275455,"CHART":"data/charts/row-27.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":18.08,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-15T00:00:00.000Z","_dateISO":"2026-07-15"},{"_sourceRow":28,"DATE":"26/07/17","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"HYPE","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":9.56,"ACCOUNT SIZE":168.97,"P&L %":0.05997114359,"CHART":"data/charts/row-28.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":9.56,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-17T00:00:00.000Z","_dateISO":"2026-07-17"},{"_sourceRow":29,"DATE":"26/07/19","Previous Trade Loss":"No","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"AVAX","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.16,"ACCOUNT SIZE":166.81,"P&L %":-0.01278333432,"CHART":"data/charts/row-29.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.16,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-19T00:00:00.000Z","_dateISO":"2026-07-19"},{"_sourceRow":30,"DATE":"26/07/19","Previous Trade Loss":"Yes","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"SUI","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":"No","Wave 4 End at wave 1 end":"After","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"BOS","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-3.34,"ACCOUNT SIZE":163.47,"P&L %":-0.02002278041,"CHART":"data/charts/row-30.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-3.34,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-19T00:00:00.000Z","_dateISO":"2026-07-19"},{"_sourceRow":31,"DATE":"26/07/20","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"ZEC","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":"No","Wave 4 End at wave 1 end":"After","Wave5 at":2.618,"Highlight on Wave5":"No","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":10.56,"ACCOUNT SIZE":174.03,"P&L %":0.06459900899,"CHART":"data/charts/row-31.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":10.56,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-20T00:00:00.000Z","_dateISO":"2026-07-20"},{"_sourceRow":32,"DATE":"26/07/20","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"LINK","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-3.48,"ACCOUNT SIZE":170.55,"P&L %":-0.01999655232,"CHART":"data/charts/row-32.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-3.48,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-20T00:00:00.000Z","_dateISO":"2026-07-20"},{"_sourceRow":33,"DATE":"26/07/21","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LOP","TOKEN":"ADA","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":0.34,"ACCOUNT SIZE":170.89,"P&L %":0.001993550279,"CHART":"data/charts/row-33.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":0.34,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-21T00:00:00.000Z","_dateISO":"2026-07-21"},{"_sourceRow":34,"DATE":"26/07/21","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":10.49,"ACCOUNT SIZE":181.38,"P&L %":0.06138451636,"CHART":"data/charts/row-34.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":10.49,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-21T00:00:00.000Z","_dateISO":"2026-07-21"},{"_sourceRow":35,"DATE":"26/07/22","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"LO","TOKEN":"HYPE","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-0.94,"ACCOUNT SIZE":180.44,"P&L %":-0.0051824898,"CHART":"data/charts/row-35.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-0.94,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-22T00:00:00.000Z","_dateISO":"2026-07-22"},{"_sourceRow":36,"DATE":"26/07/24","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-3.59,"ACCOUNT SIZE":176.85,"P&L %":-0.01989581024,"CHART":"data/charts/row-36.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-3.59,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-24T00:00:00.000Z","_dateISO":"2026-07-24"},{"_sourceRow":37,"DATE":"26/07/26","Previous Trade Loss":"No","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"SUI","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":1.57,"ACCOUNT SIZE":178.42,"P&L %":0.00887757987,"CHART":"data/charts/row-37.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":1.57,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-26T00:00:00.000Z","_dateISO":"2026-07-26"},{"_sourceRow":38,"DATE":"26/07/31","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LOP","TOKEN":"HYPE","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"At","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","P&L":4.18,"ACCOUNT SIZE":182.6,"P&L %":0.02342786683,"CHART":"data/charts/row-38.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":4.18,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-31T00:00:00.000Z","_dateISO":"2026-07-31"},{"_sourceRow":39,"DATE":"26/08/01","Previous Trade Loss":"No","Day of Week":"SAT","NY/LO Hours":"LO","TOKEN":"LINK","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"No","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-3.65,"ACCOUNT SIZE":178.95,"P&L %":-0.0199890471,"CHART":"data/charts/row-39.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-3.65,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-01T00:00:00.000Z","_dateISO":"2026-08-01"},{"_sourceRow":40,"DATE":"26/08/03","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"ETH","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":6.22,"ACCOUNT SIZE":185.17,"P&L %":0.03475831238,"CHART":"data/charts/row-40.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":6.22,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-03T00:00:00.000Z","_dateISO":"2026-08-03"},{"_sourceRow":41,"DATE":"26/08/04","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"HYPE","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","P&L":-2.99,"ACCOUNT SIZE":182.18,"P&L %":-0.01614732408,"CHART":"data/charts/row-41.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":-2.99,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-04T00:00:00.000Z","_dateISO":"2026-08-04"},{"_sourceRow":42,"DATE":"26/08/06","Previous Trade Loss":"No","Day of Week":"THU","NY/LO Hours":"NY","TOKEN":"ZEC","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","P&L":15.64,"ACCOUNT SIZE":197.82,"P&L %":0.08584916017,"CHART":"data/charts/row-42.png","Average PNL":null,"Account Growth":null,"Column AE":null,"_pnl":15.64,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-06T00:00:00.000Z","_dateISO":"2026-08-06"}]}</script>
+<script id="embedded-snapshot" type="application/json">{"meta":{"fileName":"35A_Dynamic_Stats.xlsx","sheetName":"35A","headerRowExcelIndex":1,"scannedRows":9999,"recordCount":59,"usableRecordCount":59,"pnlField":"P&L","pnlFieldConfident":true,"dateField":"DATE","outcomeField":"P/ L/ BE","weekdayField":"Day of Week","columns":[{"header":"DATE","type":"date","nonBlankCount":59,"numericRatio":0,"distinctCount":46,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Previous Trade Loss","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Day of Week","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":7,"distinctValues":["FRI","MON","SAT","SUN","THU","TUE","WED"],"isFactorCandidate":true,"isMetricLike":false},{"header":"NY/LO Hours","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":3,"distinctValues":["LO","LOP","NY"],"isFactorCandidate":true,"isMetricLike":false},{"header":"TOKEN","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":14,"distinctValues":["ADA","AVAX","BNB","DOGE","ETH","HYPE","LINK","SOL","SUI","XLM","XMR","XRP","ZEC","ZECUS"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Major News passed hour","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"LONG/ SHORT","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["LONG","SHORT"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Trend Break","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave2 at","type":"categorical","nonBlankCount":59,"numericRatio":0.9491525423728814,"distinctCount":6,"distinctValues":["0.236","0.382","0.5","0.618","0.786","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave3 at","type":"categorical","nonBlankCount":59,"numericRatio":0.6610169491525424,"distinctCount":4,"distinctValues":["1.618","2.618","3.618","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Highlight on Wave3","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave4 at","type":"categorical","nonBlankCount":59,"numericRatio":0.8983050847457628,"distinctCount":4,"distinctValues":["0.236","0.382","0.5","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave 4 End at wave 1 end","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":3,"distinctValues":["After","At","Before"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave5 at","type":"categorical","nonBlankCount":59,"numericRatio":0.864406779661017,"distinctCount":5,"distinctValues":["1.618","2.618","3.618","4.618","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Highlight on Wave5","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"RSI Divergences betweem 3 & 5","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - SMOG Indicator at Wave 5","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - COCH/BOS Between Wave 5 & A","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":3,"distinctValues":["BOS","CHoCH","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - COCH/BOS After Wave A","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":3,"distinctValues":["BOS","CHoCH","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"SMOG - Bear Short / Bull Long FVG on Wave A","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave A beyond 3 and not passed 4","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":true,"isMetricLike":false},{"header":"Wave C at","type":"categorical","nonBlankCount":59,"numericRatio":0.7796610169491526,"distinctCount":5,"distinctValues":["0.618","1","1.618","2.618","No"],"isFactorCandidate":true,"isMetricLike":false},{"header":"P/ L/ BE","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":3,"distinctValues":["BE","L","P"],"isFactorCandidate":false,"isMetricLike":true},{"header":"Profit passed 1:3RR","type":"categorical","nonBlankCount":59,"numericRatio":0,"distinctCount":2,"distinctValues":["No","Yes"],"isFactorCandidate":false,"isMetricLike":true},{"header":"Trade Amount","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":45,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Trade Acct Balance","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":44,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Risk Next Trade","type":"categorical","nonBlankCount":59,"numericRatio":1,"distinctCount":3,"distinctValues":["0.02","0.04","0.06"],"isFactorCandidate":false,"isMetricLike":true},{"header":"P&L","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":59,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"P&L %","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":59,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"CHART","type":"image","nonBlankCount":58,"numericRatio":0,"distinctCount":54,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"To Holding","type":"categorical","nonBlankCount":59,"numericRatio":1,"distinctCount":11,"distinctValues":["0","0.25","0.4650000000000025","0.47","3.7175","3.8075","4.0625","4.325","4.9325","5.6425","50"],"isFactorCandidate":false,"isMetricLike":true},{"header":"Holding Balance","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":27,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"To Trade Acct","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":16,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Account Balance","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":58,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Account Growth %","type":"numeric","nonBlankCount":59,"numericRatio":1,"distinctCount":58,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Average PNL","type":"categorical","nonBlankCount":2,"numericRatio":0,"distinctCount":2,"distinctValues":["When Price cross Wave A - Move SL to below Wave B","When Price cross Wave C - Move SL to last CHoCH/BOS LL/HH in the direction of trend"],"isFactorCandidate":false,"isMetricLike":false},{"header":"Account Growth","type":"categorical","nonBlankCount":0,"numericRatio":0,"distinctCount":0,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":true},{"header":"Column AL","type":"categorical","nonBlankCount":0,"numericRatio":0,"distinctCount":0,"distinctValues":[],"isFactorCandidate":false,"isMetricLike":false}],"factorFields":["Previous Trade Loss","Day of Week","NY/LO Hours","TOKEN","Major News passed hour","LONG/ SHORT","Trend Break","Wave2 at","Wave3 at","Highlight on Wave3","Wave4 at","Wave 4 End at wave 1 end","Wave5 at","Highlight on Wave5","RSI Divergences betweem 3 & 5","SMOG - SMOG Indicator at Wave 5","SMOG - COCH/BOS Between Wave 5 & A","SMOG - COCH/BOS After Wave A","SMOG - Bear Short / Bull Long FVG on Wave A","Wave A beyond 3 and not passed 4","Wave C at"],"headers":["DATE","Previous Trade Loss","Day of Week","NY/LO Hours","TOKEN","Major News passed hour","LONG/ SHORT","Trend Break","Wave2 at","Wave3 at","Highlight on Wave3","Wave4 at","Wave 4 End at wave 1 end","Wave5 at","Highlight on Wave5","RSI Divergences betweem 3 & 5","SMOG - SMOG Indicator at Wave 5","SMOG - COCH/BOS Between Wave 5 & A","SMOG - COCH/BOS After Wave A","SMOG - Bear Short / Bull Long FVG on Wave A","Wave A beyond 3 and not passed 4","Wave C at","P/ L/ BE","Profit passed 1:3RR","Trade Amount","Trade Acct Balance","Risk Next Trade","P&L","P&L %","CHART","To Holding","Holding Balance","To Trade Acct","Account Balance","Account Growth %","Average PNL","Account Growth","Column AL"],"columnDropdowns":{"Wave C at":["1.618","2.618","1.0","No","0.618"],"TOKEN":["ADA","ATOM","AVAX","PAXG","SOL","LINK","LTC","SUI","ETH","HYPE","ZECUS","BNB","XLM","ZEC","DOGE","XRP","XMR"],"Wave4 at":["0.50","0.382","0.236","No"],"Wave5 at":["1.618","2.618","3.618","4.618","No"],"Wave 4 End at wave 1 end":["Before","At","After"],"Wave2 at":["0.236","0.382","0.5","0.618","0.786","No"],"P/ L/ BE":["P","BE","L"],"Wave3 at":["1.618","2.0","2.618","No","3.618"],"Profit passed 1:3RR":["Yes","No"],"Trade Amount":["Yes","No"],"Trade Acct Balance":["Yes","No"],"Risk Next Trade":["Yes","No"],"Previous Trade Loss":["Yes","No"],"Trend Break":["Yes","No"],"Highlight on Wave3":["Yes","No"],"Highlight on Wave5":["Yes","No"],"RSI Divergences betweem 3 & 5":["Yes","No"],"SMOG - SMOG Indicator at Wave 5":["Yes","No"],"SMOG - Bear Short / Bull Long FVG on Wave A":["Yes","No"],"Wave A beyond 3 and not passed 4":["Yes","No"],"Major News passed hour":["Yes","No"],"LONG/ SHORT":["LONG","SHORT"],"SMOG - COCH/BOS Between Wave 5 & A":["CHoCH","BOS","No"],"SMOG - COCH/BOS After Wave A":["CHoCH","BOS","No"],"NY/LO Hours":["LOP","LO","NY"],"Day of Week":["MON","TUE","WED","THU","FRI","SAT","SUN"]}},"records":[{"_sourceRow":3,"DATE":"26/05/15","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"Yes","Trade Amount":2,"Trade Acct Balance":98,"Risk Next Trade":0.02,"P&L":-2,"P&L %":-0.02,"CHART":"data/charts/row-3.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":98,"Account Growth %":-0.020000000000000018,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-05-15T00:00:00.000Z","_dateISO":"2026-05-15"},{"_sourceRow":4,"DATE":"26/05/25","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"NY","TOKEN":"AVAX","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":1.96,"Trade Acct Balance":103.03,"Risk Next Trade":0.02,"P&L":5.03,"P&L %":0.0513265306122449,"CHART":"data/charts/row-4.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":103.03,"Account Growth %":0.030299999999999994,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":5.03,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-05-25T00:00:00.000Z","_dateISO":"2026-05-25"},{"_sourceRow":5,"DATE":"26/06/05","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"AVAX","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"No","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.0606,"Trade Acct Balance":102.03,"Risk Next Trade":0.02,"P&L":-1,"P&L %":-0.00970591089973794,"CHART":null,"To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":102.03,"Account Growth %":0.020299999999999985,"Average PNL":"When Price cross Wave A - Move SL to below Wave B","Account Growth":null,"Column AL":null,"_pnl":-1,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-05T00:00:00.000Z","_dateISO":"2026-06-05"},{"_sourceRow":6,"DATE":"26/06/07","Previous Trade Loss":"Yes","Day of Week":"THU","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"No","Wave2 at":"0.382","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.0406,"Trade Acct Balance":101.4,"Risk Next Trade":0.02,"P&L":-0.629999999999995,"P&L %":-0.006174654513378369,"CHART":"data/charts/row-6.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":101.4,"Account Growth %":0.014000000000000012,"Average PNL":"When Price cross Wave C - Move SL to last CHoCH/BOS LL/HH in the direction of trend","Account Growth":null,"Column AL":null,"_pnl":-0.629999999999995,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-07T00:00:00.000Z","_dateISO":"2026-06-07"},{"_sourceRow":7,"DATE":"26/06/08","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.028,"Trade Acct Balance":105.30000000000001,"Risk Next Trade":0.02,"P&L":3.90000000000001,"P&L %":0.03846153846153856,"CHART":"data/charts/row-7.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":105.30000000000001,"Account Growth %":0.05300000000000016,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":3.90000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-08T00:00:00.000Z","_dateISO":"2026-06-08"},{"_sourceRow":8,"DATE":"26/06/14","Previous Trade Loss":"No","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.1060000000000003,"Trade Acct Balance":113.34,"Risk Next Trade":0.02,"P&L":8.03999999999999,"P&L %":0.07635327635327625,"CHART":"data/charts/row-8.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":113.34,"Account Growth %":0.13339999999999996,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":8.03999999999999,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-14T00:00:00.000Z","_dateISO":"2026-06-14"},{"_sourceRow":9,"DATE":"26/06/16","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":3.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.2668,"Trade Acct Balance":111.11,"Risk Next Trade":0.02,"P&L":-2.23,"P&L %":-0.019675313216869595,"CHART":"data/charts/row-9.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":111.11,"Account Growth %":0.11109999999999998,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.23,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-16T00:00:00.000Z","_dateISO":"2026-06-16"},{"_sourceRow":10,"DATE":"26/06/24","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.4142,"Trade Acct Balance":126.65,"Risk Next Trade":0.02,"P&L":5.94,"P&L %":0.053460534605346055,"CHART":"data/charts/row-10.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":126.65,"Account Growth %":0.26649999999999996,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":5.94,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-24T00:00:00.000Z","_dateISO":"2026-06-24"},{"_sourceRow":11,"DATE":"26/06/22","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LOP","TOKEN":"ZECUS","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.2222,"Trade Acct Balance":116.31,"Risk Next Trade":0.02,"P&L":5.2,"P&L %":0.044425459205467754,"CHART":"data/charts/row-11.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":116.31,"Account Growth %":0.16310000000000002,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":5.2,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-22T00:00:00.000Z","_dateISO":"2026-06-22"},{"_sourceRow":12,"DATE":"26/06/23","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"BNB","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"No","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.3262,"Trade Acct Balance":120.71000000000001,"Risk Next Trade":0.02,"P&L":4.40000000000001,"P&L %":0.03599182004089988,"CHART":"data/charts/row-12.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":120.71000000000001,"Account Growth %":0.20710000000000006,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":4.40000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-06-23T00:00:00.000Z","_dateISO":"2026-06-23"},{"_sourceRow":13,"DATE":"26/06/25","Previous Trade Loss":"No","Day of Week":"THU","NY/LO Hours":"NY","TOKEN":"BNB","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.5330000000000004,"Trade Acct Balance":124.12,"Risk Next Trade":0.02,"P&L":-2.53,"P&L %":-0.01997631267272009,"CHART":"data/charts/row-13.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":124.12,"Account Growth %":0.24120000000000008,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.53,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-25T00:00:00.000Z","_dateISO":"2026-06-25"},{"_sourceRow":14,"DATE":"26/06/30","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"ADA","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.4824,"Trade Acct Balance":123.47,"Risk Next Trade":0.02,"P&L":-0.650000000000006,"P&L %":-0.005236867547534692,"CHART":"data/charts/row-14.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":123.47,"Account Growth %":0.2346999999999999,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-0.650000000000006,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-06-30T00:00:00.000Z","_dateISO":"2026-06-30"},{"_sourceRow":15,"DATE":"26/07/01","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"AVAX","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.4694,"Trade Acct Balance":129.02,"Risk Next Trade":0.02,"P&L":5.55000000000001,"P&L %":0.04495019032963481,"CHART":"data/charts/row-15.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":129.02,"Account Growth %":0.2902,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":5.55000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-01T00:00:00.000Z","_dateISO":"2026-07-01"},{"_sourceRow":16,"DATE":"26/07/01","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"No","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.5804000000000005,"Trade Acct Balance":126.44000000000001,"Risk Next Trade":0.02,"P&L":-2.58,"P&L %":-0.01999689970547202,"CHART":"data/charts/row-16.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":126.44000000000001,"Account Growth %":0.2644000000000002,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.58,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-01T00:00:00.000Z","_dateISO":"2026-07-01"},{"_sourceRow":17,"DATE":"26/07/01","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"XLM","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.5288000000000004,"Trade Acct Balance":126.83000000000001,"Risk Next Trade":0.02,"P&L":0.390000000000001,"P&L %":0.0030844669408415138,"CHART":"data/charts/row-17.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":126.83000000000001,"Account Growth %":0.2683000000000002,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":0.390000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-01T00:00:00.000Z","_dateISO":"2026-07-01"},{"_sourceRow":18,"DATE":"26/07/03","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"ZECUS","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"No","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.5366000000000004,"Trade Acct Balance":124.29,"Risk Next Trade":0.02,"P&L":-2.54000000000001,"P&L %":-0.020026807537648898,"CHART":"data/charts/row-18.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":124.29,"Account Growth %":0.24290000000000012,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.54000000000001,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-03T00:00:00.000Z","_dateISO":"2026-07-03"},{"_sourceRow":19,"DATE":"26/07/05","Previous Trade Loss":"Yes","Day of Week":"SUN","NY/LO Hours":"LOP","TOKEN":"DOGE","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.4858000000000002,"Trade Acct Balance":136.87,"Risk Next Trade":0.02,"P&L":12.58,"P&L %":0.10121490063561026,"CHART":"data/charts/row-19.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":136.87,"Account Growth %":0.3687,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":12.58,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-05T00:00:00.000Z","_dateISO":"2026-07-05"},{"_sourceRow":20,"DATE":"26/07/06","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"LINK","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.7374,"Trade Acct Balance":135.64000000000001,"Risk Next Trade":0.02,"P&L":-1.22999999999999,"P&L %":-0.008986629648571564,"CHART":"data/charts/row-20.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":135.64000000000001,"Account Growth %":0.35640000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-1.22999999999999,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-06T00:00:00.000Z","_dateISO":"2026-07-06"},{"_sourceRow":21,"DATE":"26/07/06","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"DOGE","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.7128000000000005,"Trade Acct Balance":137.38000000000002,"Risk Next Trade":0.02,"P&L":1.74000000000001,"P&L %":0.012828074314361617,"CHART":"data/charts/row-21.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":137.38000000000002,"Account Growth %":0.37380000000000013,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":1.74000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-06T00:00:00.000Z","_dateISO":"2026-07-06"},{"_sourceRow":22,"DATE":"26/07/07","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"No","Wave2 at":"0.5","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.7476000000000007,"Trade Acct Balance":134.63000000000002,"Risk Next Trade":0.02,"P&L":-2.75,"P&L %":-0.020017469791818312,"CHART":"data/charts/row-22.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":134.63000000000002,"Account Growth %":0.3463000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.75,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-07T00:00:00.000Z","_dateISO":"2026-07-07"},{"_sourceRow":23,"DATE":"26/07/09","Previous Trade Loss":"Yes","Day of Week":"THU","NY/LO Hours":"LOP","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.6926000000000005,"Trade Acct Balance":143.39000000000001,"Risk Next Trade":0.02,"P&L":8.75999999999999,"P&L %":0.06506722127311883,"CHART":"data/charts/row-23.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":143.39000000000001,"Account Growth %":0.4339000000000002,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":8.75999999999999,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-09T00:00:00.000Z","_dateISO":"2026-07-09"},{"_sourceRow":24,"DATE":"26/07/14","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"SOL","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.8678000000000003,"Trade Acct Balance":146.26000000000002,"Risk Next Trade":0.02,"P&L":2.87,"P&L %":0.020015342771462444,"CHART":"data/charts/row-24.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":146.26000000000002,"Account Growth %":0.4626000000000001,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":2.87,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-14T00:00:00.000Z","_dateISO":"2026-07-14"},{"_sourceRow":25,"DATE":"26/07/14","Previous Trade Loss":"Yes","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"SUI","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.9252000000000002,"Trade Acct Balance":144.21,"Risk Next Trade":0.02,"P&L":-2.05000000000001,"P&L %":-0.01401613564884459,"CHART":"data/charts/row-25.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":144.21,"Account Growth %":0.44210000000000016,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.05000000000001,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-14T00:00:00.000Z","_dateISO":"2026-07-14"},{"_sourceRow":26,"DATE":"26/07/15","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"LO","TOKEN":"XRP","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.8842000000000003,"Trade Acct Balance":141.33,"Risk Next Trade":0.02,"P&L":-2.88,"P&L %":-0.01997087580611608,"CHART":"data/charts/row-26.png","To Holding":0,"Holding Balance":0,"To Trade Acct":0,"Account Balance":141.33,"Account Growth %":0.4133000000000002,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.88,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-15T00:00:00.000Z","_dateISO":"2026-07-15"},{"_sourceRow":27,"DATE":"26/07/15","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"LINK","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"4.618","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.8266000000000004,"Trade Acct Balance":109.41000000000003,"Risk Next Trade":0.02,"P&L":18.08,"P&L %":0.12792754546097784,"CHART":"data/charts/row-27.png","To Holding":50,"Holding Balance":50,"To Trade Acct":0,"Account Balance":159.41000000000003,"Account Growth %":0.5941000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":18.08,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-15T00:00:00.000Z","_dateISO":"2026-07-15"},{"_sourceRow":28,"DATE":"26/07/17","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"HYPE","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.1882000000000006,"Trade Acct Balance":118.97000000000003,"Risk Next Trade":0.02,"P&L":9.56,"P&L %":0.05997114359199548,"CHART":"data/charts/row-28.png","To Holding":0,"Holding Balance":50,"To Trade Acct":0,"Account Balance":168.97000000000003,"Account Growth %":0.6897000000000002,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":9.56,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-17T00:00:00.000Z","_dateISO":"2026-07-17"},{"_sourceRow":29,"DATE":"26/07/19","Previous Trade Loss":"No","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"AVAX","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.3794000000000004,"Trade Acct Balance":118.97000000000003,"Risk Next Trade":0.02,"P&L":-2.16,"P&L %":-0.01278333431970172,"CHART":"data/charts/row-29.png","To Holding":0,"Holding Balance":47.84,"To Trade Acct":2.16,"Account Balance":166.81000000000003,"Account Growth %":0.6681000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.16,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-19T00:00:00.000Z","_dateISO":"2026-07-19"},{"_sourceRow":30,"DATE":"26/07/19","Previous Trade Loss":"Yes","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"SUI","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":"No","Wave 4 End at wave 1 end":"After","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"BOS","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.3794000000000004,"Trade Acct Balance":118.97000000000003,"Risk Next Trade":0.02,"P&L":-3.34,"P&L %":-0.020022780408848386,"CHART":"data/charts/row-30.png","To Holding":0,"Holding Balance":44.5,"To Trade Acct":3.34,"Account Balance":163.47000000000003,"Account Growth %":0.6347000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-3.34,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-19T00:00:00.000Z","_dateISO":"2026-07-19"},{"_sourceRow":31,"DATE":"26/07/20","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"ZEC","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":"No","Wave 4 End at wave 1 end":"After","Wave5 at":2.618,"Highlight on Wave5":"No","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.3794000000000004,"Trade Acct Balance":129.53000000000003,"Risk Next Trade":0.02,"P&L":10.56,"P&L %":0.06459900899247567,"CHART":"data/charts/row-31.png","To Holding":0,"Holding Balance":44.5,"To Trade Acct":0,"Account Balance":174.03000000000003,"Account Growth %":0.7403000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":10.56,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-20T00:00:00.000Z","_dateISO":"2026-07-20"},{"_sourceRow":32,"DATE":"26/07/20","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"LINK","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.5906000000000007,"Trade Acct Balance":129.53000000000003,"Risk Next Trade":0.02,"P&L":-3.47999999999999,"P&L %":-0.019996552318565706,"CHART":"data/charts/row-32.png","To Holding":0,"Holding Balance":41.02000000000001,"To Trade Acct":3.47999999999999,"Account Balance":170.55000000000004,"Account Growth %":0.7055000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-3.47999999999999,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-20T00:00:00.000Z","_dateISO":"2026-07-20"},{"_sourceRow":33,"DATE":"26/07/21","Previous Trade Loss":"Yes","Day of Week":"TUE","NY/LO Hours":"LOP","TOKEN":"ADA","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.5906000000000007,"Trade Acct Balance":129.87000000000003,"Risk Next Trade":0.02,"P&L":0.340000000000003,"P&L %":0.001993550278510718,"CHART":"data/charts/row-33.png","To Holding":0,"Holding Balance":41.02000000000001,"To Trade Acct":0,"Account Balance":170.89000000000004,"Account Growth %":0.7089000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":0.340000000000003,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-21T00:00:00.000Z","_dateISO":"2026-07-21"},{"_sourceRow":34,"DATE":"26/07/21","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.597400000000001,"Trade Acct Balance":140.36000000000004,"Risk Next Trade":0.02,"P&L":10.49,"P&L %":0.06138451635555034,"CHART":"data/charts/row-34.png","To Holding":0,"Holding Balance":41.02000000000001,"To Trade Acct":0,"Account Balance":181.38000000000005,"Account Growth %":0.8138000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":10.49,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-21T00:00:00.000Z","_dateISO":"2026-07-21"},{"_sourceRow":35,"DATE":"26/07/22","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LO","TOKEN":"HYPE","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.807200000000001,"Trade Acct Balance":140.36000000000004,"Risk Next Trade":0.02,"P&L":-0.939999999999998,"P&L %":-0.005182489800418997,"CHART":"data/charts/row-35.png","To Holding":0,"Holding Balance":40.08000000000001,"To Trade Acct":0.939999999999998,"Account Balance":180.44000000000005,"Account Growth %":0.8044000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-0.939999999999998,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-22T00:00:00.000Z","_dateISO":"2026-07-22"},{"_sourceRow":36,"DATE":"26/07/24","Previous Trade Loss":"Yes","Day of Week":"FRI","NY/LO Hours":"LO","TOKEN":"ADA","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.807200000000001,"Trade Acct Balance":140.36000000000004,"Risk Next Trade":0.02,"P&L":-3.59,"P&L %":-0.019895810241631562,"CHART":"data/charts/row-36.png","To Holding":0,"Holding Balance":36.49000000000001,"To Trade Acct":3.59,"Account Balance":176.85000000000005,"Account Growth %":0.7685000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-3.59,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-07-24T00:00:00.000Z","_dateISO":"2026-07-24"},{"_sourceRow":37,"DATE":"26/07/26","Previous Trade Loss":"Yes","Day of Week":"SUN","NY/LO Hours":"NY","TOKEN":"SUI","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.807200000000001,"Trade Acct Balance":141.93000000000004,"Risk Next Trade":0.02,"P&L":1.56999999999999,"P&L %":0.008877579869946223,"CHART":"data/charts/row-37.png","To Holding":0,"Holding Balance":36.49000000000001,"To Trade Acct":0,"Account Balance":178.42000000000004,"Account Growth %":0.7842000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":1.56999999999999,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-26T00:00:00.000Z","_dateISO":"2026-07-26"},{"_sourceRow":38,"DATE":"26/07/31","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"LOP","TOKEN":"HYPE","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"At","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":2.838600000000001,"Trade Acct Balance":146.11000000000004,"Risk Next Trade":0.02,"P&L":4.18000000000001,"P&L %":0.023427866831072803,"CHART":"data/charts/row-38.png","To Holding":0,"Holding Balance":36.49000000000001,"To Trade Acct":0,"Account Balance":182.60000000000005,"Account Growth %":0.8260000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":4.18000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-07-31T00:00:00.000Z","_dateISO":"2026-07-31"},{"_sourceRow":39,"DATE":"26/08/01","Previous Trade Loss":"No","Day of Week":"SAT","NY/LO Hours":"LO","TOKEN":"LINK","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"No","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":4.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":2.922200000000001,"Trade Acct Balance":146.11000000000004,"Risk Next Trade":0.02,"P&L":-3.65000000000001,"P&L %":-0.019989047097480884,"CHART":"data/charts/row-39.png","To Holding":0,"Holding Balance":32.839999999999996,"To Trade Acct":3.65000000000001,"Account Balance":178.95000000000005,"Account Growth %":0.7895000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-3.65000000000001,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-01T00:00:00.000Z","_dateISO":"2026-08-01"},{"_sourceRow":40,"DATE":"26/08/03","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"ETH","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.786","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":2.922200000000001,"Trade Acct Balance":152.33000000000004,"Risk Next Trade":0.02,"P&L":6.22,"P&L %":0.03475831237775914,"CHART":"data/charts/row-40.png","To Holding":0,"Holding Balance":32.839999999999996,"To Trade Acct":0,"Account Balance":185.17000000000004,"Account Growth %":0.8517000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":6.22,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-03T00:00:00.000Z","_dateISO":"2026-08-03"},{"_sourceRow":41,"DATE":"26/08/04","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"NY","TOKEN":"HYPE","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":"No","Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":3.046600000000001,"Trade Acct Balance":152.33000000000004,"Risk Next Trade":0.02,"P&L":-2.99000000000001,"P&L %":-0.016147324080574656,"CHART":"data/charts/row-41.png","To Holding":0,"Holding Balance":29.849999999999987,"To Trade Acct":2.99000000000001,"Account Balance":182.18000000000004,"Account Growth %":0.8218000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.99000000000001,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-04T00:00:00.000Z","_dateISO":"2026-08-04"},{"_sourceRow":42,"DATE":"26/08/06","Previous Trade Loss":"Yes","Day of Week":"THU","NY/LO Hours":"NY","TOKEN":"ZEC","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.5,"Wave 4 End at wave 1 end":"At","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":3.046600000000001,"Trade Acct Balance":167.97000000000006,"Risk Next Trade":0.02,"P&L":15.64,"P&L %":0.08584916017125918,"CHART":"data/charts/row-42.png","To Holding":0,"Holding Balance":29.849999999999987,"To Trade Acct":0,"Account Balance":197.82000000000005,"Account Growth %":0.9782000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":15.64,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-06T00:00:00.000Z","_dateISO":"2026-08-06"},{"_sourceRow":43,"DATE":"26/08/11","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LO","TOKEN":"XLM","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"No","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":3.3594000000000013,"Trade Acct Balance":167.97000000000006,"Risk Next Trade":0.02,"P&L":-3.96000000000001,"P&L %":-0.020018198362147452,"CHART":"data/charts/row-43.png","To Holding":0,"Holding Balance":25.889999999999976,"To Trade Acct":3.96000000000001,"Account Balance":193.86000000000004,"Account Growth %":0.9386000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-3.96000000000001,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-11T00:00:00.000Z","_dateISO":"2026-08-11"},{"_sourceRow":44,"DATE":"26/08/12","Previous Trade Loss":"Yes","Day of Week":"WED","NY/LO Hours":"LO","TOKEN":"ZEC","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.236,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":3.3594000000000013,"Trade Acct Balance":129.86000000000007,"Risk Next Trade":0.04,"P&L":11.89,"P&L %":0.061332920664396974,"CHART":"data/charts/row-44.png","To Holding":50,"Holding Balance":75.88999999999997,"To Trade Acct":0,"Account Balance":205.75000000000006,"Account Growth %":1.0575000000000006,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":11.89,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-12T00:00:00.000Z","_dateISO":"2026-08-12"},{"_sourceRow":45,"DATE":"26/08/13","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"HYPE","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":"No","Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"No","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":5.194400000000003,"Trade Acct Balance":129.86000000000007,"Risk Next Trade":0.04,"P&L":-4.12,"P&L %":-0.020024301336573506,"CHART":"data/charts/row-45.png","To Holding":0,"Holding Balance":71.76999999999997,"To Trade Acct":4.12,"Account Balance":201.63000000000005,"Account Growth %":1.0163000000000006,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-4.12,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-13T00:00:00.000Z","_dateISO":"2026-08-13"},{"_sourceRow":46,"DATE":"26/08/13","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LOP","TOKEN":"LINK","Major News passed hour":"Yes","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":2.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"No","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":5.194400000000003,"Trade Acct Balance":130.61000000000007,"Risk Next Trade":0.04,"P&L":1,"P&L %":0.004959579427664533,"CHART":"data/charts/row-46.png","To Holding":0.25,"Holding Balance":72.01999999999997,"To Trade Acct":0,"Account Balance":202.63000000000005,"Account Growth %":1.0263000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":1,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-13T00:00:00.000Z","_dateISO":"2026-08-13"},{"_sourceRow":47,"DATE":"26/08/17","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"DOGE","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"No","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"BOS","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"BE","Profit passed 1:3RR":"No","Trade Amount":5.224400000000003,"Trade Acct Balance":130.61000000000007,"Risk Next Trade":0.04,"P&L":0,"P&L %":0,"CHART":"data/charts/row-47.png","To Holding":0,"Holding Balance":72.01999999999997,"To Trade Acct":0,"Account Balance":202.63000000000005,"Account Growth %":1.0263000000000004,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":0,"_hasUsablePnl":true,"_outcome":"breakeven","_date":"2026-08-17T00:00:00.000Z","_dateISO":"2026-08-17"},{"_sourceRow":48,"DATE":"26/08/19","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"LO","TOKEN":"XLM","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":1.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":5.224400000000003,"Trade Acct Balance":130.61000000000007,"Risk Next Trade":0.04,"P&L":-2.03,"P&L %":-0.010018259882544536,"CHART":"data/charts/row-48.png","To Holding":0,"Holding Balance":69.98999999999997,"To Trade Acct":2.03,"Account Balance":200.60000000000005,"Account Growth %":1.0060000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-2.03,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-08-19T00:00:00.000Z","_dateISO":"2026-08-19"},{"_sourceRow":49,"DATE":"26/08/26","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"ETH","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":5.224400000000003,"Trade Acct Balance":145.40750000000008,"Risk Next Trade":0.04,"P&L":19.73,"P&L %":0.09835493519441672,"CHART":"data/charts/row-49.png","To Holding":4.9325,"Holding Balance":74.92249999999997,"To Trade Acct":0,"Account Balance":220.33000000000004,"Account Growth %":1.2033000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":19.73,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-26T00:00:00.000Z","_dateISO":"2026-08-26"},{"_sourceRow":50,"DATE":"26/08/31","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LOP","TOKEN":"HYPE","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"BOS","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":2.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":5.816300000000004,"Trade Acct Balance":156.56000000000006,"Risk Next Trade":0.04,"P&L":14.87,"P&L %":0.06748967457904051,"CHART":"data/charts/row-50.png","To Holding":3.7175,"Holding Balance":78.63999999999997,"To Trade Acct":0,"Account Balance":235.20000000000005,"Account Growth %":1.3520000000000003,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":14.87,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-31T00:00:00.000Z","_dateISO":"2026-08-31"},{"_sourceRow":51,"DATE":"26/08/31","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LOP","TOKEN":"ETH","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.5","Wave3 at":"No","Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":"No","P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":6.262400000000002,"Trade Acct Balance":173.48750000000007,"Risk Next Trade":0.04,"P&L":22.57,"P&L %":0.09596088435374148,"CHART":"data/charts/row-51.png","To Holding":5.6425,"Holding Balance":84.28249999999997,"To Trade Acct":0,"Account Balance":257.77000000000004,"Account Growth %":1.5777000000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":22.57,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-08-31T00:00:00.000Z","_dateISO":"2026-08-31"},{"_sourceRow":52,"DATE":"26/09/02","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"LINK","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"BE","Profit passed 1:3RR":"No","Trade Amount":6.9395000000000024,"Trade Acct Balance":174.88250000000008,"Risk Next Trade":0.04,"P&L":1.86000000000001,"P&L %":0.007215734957520308,"CHART":"data/charts/row-52.png","To Holding":0.4650000000000025,"Holding Balance":84.74749999999997,"To Trade Acct":0,"Account Balance":259.63000000000005,"Account Growth %":1.5963000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":1.86000000000001,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-09-02T00:00:00.000Z","_dateISO":"2026-09-02"},{"_sourceRow":53,"DATE":"26/09/02","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"SOL","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"Before","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"P","Profit passed 1:3RR":"Yes","Trade Amount":6.995300000000003,"Trade Acct Balance":186.3050000000001,"Risk Next Trade":0.04,"P&L":15.23,"P&L %":0.05866040134036898,"CHART":"data/charts/row-53.png","To Holding":3.8075,"Holding Balance":88.55499999999998,"To Trade Acct":0,"Account Balance":274.86000000000007,"Account Growth %":1.7486000000000006,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":15.23,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-09-02T00:00:00.000Z","_dateISO":"2026-09-02"},{"_sourceRow":54,"DATE":"26/09/08","Previous Trade Loss":"No","Day of Week":"TUE","NY/LO Hours":"LOP","TOKEN":"XLM","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":2.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":3.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":7.452200000000004,"Trade Acct Balance":198.4925000000001,"Risk Next Trade":0.04,"P&L":16.25,"P&L %":0.05912100705813867,"CHART":"data/charts/row-54.png","To Holding":4.0625,"Holding Balance":92.61749999999998,"To Trade Acct":0,"Account Balance":291.11000000000007,"Account Growth %":1.9111000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":16.25,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-09-08T00:00:00.000Z","_dateISO":"2026-09-08"},{"_sourceRow":55,"DATE":"26/09/09","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"ZEC","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"After","Wave5 at":1.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"CHoCH","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":7.939700000000004,"Trade Acct Balance":211.4675000000001,"Risk Next Trade":0.06,"P&L":17.3,"P&L %":0.05942770773934251,"CHART":"data/charts/row-55.png","To Holding":4.325,"Holding Balance":96.94249999999998,"To Trade Acct":0,"Account Balance":308.4100000000001,"Account Growth %":2.0841000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":17.3,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-09-09T00:00:00.000Z","_dateISO":"2026-09-09"},{"_sourceRow":56,"DATE":"26/09/09","Previous Trade Loss":"No","Day of Week":"WED","NY/LO Hours":"NY","TOKEN":"BNB","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.618","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":"No","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":1.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":12.688050000000004,"Trade Acct Balance":211.4675000000001,"Risk Next Trade":0.06,"P&L":-6.19,"P&L %":-0.020070685126941407,"CHART":"data/charts/row-56.png","To Holding":0,"Holding Balance":90.75249999999998,"To Trade Acct":6.19,"Account Balance":302.2200000000001,"Account Growth %":2.0222000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-6.19,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-09-09T00:00:00.000Z","_dateISO":"2026-09-09"},{"_sourceRow":57,"DATE":"26/09/10","Previous Trade Loss":"Yes","Day of Week":"THU","NY/LO Hours":"LO","TOKEN":"SOL","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":1.618,"Highlight on Wave3":"No","Wave4 at":0.382,"Wave 4 End at wave 1 end":"After","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":0.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":12.688050000000004,"Trade Acct Balance":211.4675000000001,"Risk Next Trade":0.04,"P&L":-6.04000000000002,"P&L %":-0.01998544106941969,"CHART":"data/charts/row-57.png","To Holding":0,"Holding Balance":84.71249999999996,"To Trade Acct":6.04000000000002,"Account Balance":296.18000000000006,"Account Growth %":1.9618000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-6.04000000000002,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-09-10T00:00:00.000Z","_dateISO":"2026-09-10"},{"_sourceRow":58,"DATE":"2026-09-10T00:00:00.000Z","Previous Trade Loss":"Yes","Day of Week":"THU","NY/LO Hours":"NY","TOKEN":"SOL","Major News passed hour":"Yes","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":1.618,"Highlight on Wave3":"Yes","Wave4 at":0.382,"Wave 4 End at wave 1 end":"At","Wave5 at":2.618,"Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"Yes","Wave C at":2.618,"P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":8.458700000000004,"Trade Acct Balance":211.4675000000001,"Risk Next Trade":0.04,"P&L":-0.930000000000007,"P&L %":-0.0031399824431089436,"CHART":"data/charts/row-58.png","To Holding":0,"Holding Balance":83.78249999999996,"To Trade Acct":0.930000000000007,"Account Balance":295.25000000000006,"Account Growth %":1.9525000000000006,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-0.930000000000007,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-09-10T00:00:00.000Z","_dateISO":"2026-09-10"},{"_sourceRow":59,"DATE":"2026-09-14T00:00:00.000Z","Previous Trade Loss":"No","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"XRP","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.236","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":"0.382","Wave 4 End at wave 1 end":"Before","Wave5 at":"3.618","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":"1.618","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":8.458700000000004,"Trade Acct Balance":211.4675000000001,"Risk Next Trade":0.04,"P&L":-8.45999999999998,"P&L %":-0.028653683319220923,"CHART":"##VALUE!","To Holding":0,"Holding Balance":75.32249999999998,"To Trade Acct":8.45999999999998,"Account Balance":286.7900000000001,"Account Growth %":1.8679000000000006,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-8.45999999999998,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-09-14T00:00:00.000Z","_dateISO":"2026-09-14"},{"_sourceRow":60,"DATE":"2026-09-14T00:00:00.000Z","Previous Trade Loss":"Yes","Day of Week":"MON","NY/LO Hours":"LO","TOKEN":"XMR","Major News passed hour":"No","LONG/ SHORT":"LONG","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"Yes","Wave4 at":"0.382","Wave 4 End at wave 1 end":"At","Wave5 at":"2.618","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"Yes","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"No","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"Yes","Wave A beyond 3 and not passed 4":"Yes","Wave C at":"0.618","P/ L/ BE":"P","Profit passed 1:3RR":"No","Trade Amount":8.458700000000004,"Trade Acct Balance":212.8775000000001,"Risk Next Trade":0.04,"P&L":1.88,"P&L %":0.006555319223124932,"CHART":"##VALUE!","To Holding":0.47,"Holding Balance":75.79249999999998,"To Trade Acct":0,"Account Balance":288.6700000000001,"Account Growth %":1.8867000000000007,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":1.88,"_hasUsablePnl":true,"_outcome":"win","_date":"2026-09-14T00:00:00.000Z","_dateISO":"2026-09-14"},{"_sourceRow":61,"DATE":"2026-09-18T00:00:00.000Z","Previous Trade Loss":"No","Day of Week":"FRI","NY/LO Hours":"NY","TOKEN":"XMR","Major News passed hour":"No","LONG/ SHORT":"SHORT","Trend Break":"Yes","Wave2 at":"0.382","Wave3 at":"No","Highlight on Wave3":"No","Wave4 at":"0.382","Wave 4 End at wave 1 end":"Before","Wave5 at":"3.618","Highlight on Wave5":"Yes","RSI Divergences betweem 3 & 5":"No","SMOG - SMOG Indicator at Wave 5":"Yes","SMOG - COCH/BOS Between Wave 5 & A":"CHoCH","SMOG - COCH/BOS After Wave A":"No","SMOG - Bear Short / Bull Long FVG on Wave A":"No","Wave A beyond 3 and not passed 4":"No","Wave C at":"2.618","P/ L/ BE":"L","Profit passed 1:3RR":"No","Trade Amount":8.515100000000004,"Trade Acct Balance":212.87750000000008,"Risk Next Trade":0.04,"P&L":-8.515100000000004,"P&L %":-0.029497696331451145,"CHART":"##VALUE!","To Holding":0,"Holding Balance":67.27739999999997,"To Trade Acct":8.515100000000004,"Account Balance":280.15490000000005,"Account Growth %":1.8015490000000005,"Average PNL":null,"Account Growth":null,"Column AL":null,"_pnl":-8.515100000000004,"_hasUsablePnl":true,"_outcome":"loss","_date":"2026-09-18T00:00:00.000Z","_dateISO":"2026-09-18"}]}</script>
 <script>
 (function(){
 'use strict';
+
+const ACCOUNT_MECHANICS_HEADERS = {
+  tradeAmount: 'Trade Amount',
+  tradeAcctBalance: 'Trade Acct Balance',
+  riskNextTrade: 'Risk Next Trade',
+  toHolding: 'To Holding',
+  holdingBalance: 'Holding Balance',
+  toTradeAcct: 'To Trade Acct',
+  accountBalance: 'Account Balance',
+  accountGrowth: 'Account Growth %',
+};
+const ACCOUNT_MECHANICS_HEADER_SET = new Set(Object.values(ACCOUNT_MECHANICS_HEADERS));
+
 // ---- from ziplite.js ----
 // ziplite.js — minimal ZIP central-directory reader for extracting named entries
 // from an .xlsx file, using the platform's native DecompressionStream (deflate-raw).
@@ -675,11 +704,13 @@ function isDateNumFmtId(id) {
 }
 function numFmtStringLooksLikeDate(fmt) {
   if (!fmt) return false;
-  const f = fmt.toLowerCase();
-  if (f.includes('general') || f.includes('0')) {
-    // could still contain y/m/d alongside digits (rare); require a date letter present
-  }
-  return /[ymdh]/.test(f) && !/^[#0.,\s%$"()+-]*$/.test(f) && /[ymd]/.test(f);
+  // Strip bracketed directives (e.g. [Red], [Blue], locale/condition codes)
+  // and quoted literal text (e.g. a quoted currency symbol) before checking
+  // for date-format letters — otherwise something as ordinary as a color
+  // directive or a currency symbol can spuriously match just because it
+  // happens to contain the letter y/m/d/h (e.g. "[Red]" contains 'd').
+  const stripped = fmt.replace(/\[[^\]]*\]/g, '').replace(/"[^"]*"/g, '');
+  return /[ymdh]/i.test(stripped);
 }
 
 async function readSharedStrings(zip) {
@@ -1166,15 +1197,43 @@ function countDataRows(matrix, headerIdx) {
   return n;
 }
 
+function sheetHasPlausiblePnlHeader(matrix, headerIdx) {
+  const headerRow = matrix[headerIdx] || [];
+  for (let c = 0; c < headerRow.length; c++) {
+    const text = rawCellToPrimitive(headerRow[c]);
+    if (typeof text !== 'string') continue;
+    const h = text.toLowerCase().replace(/\s+/g, '');
+    if (!['p&l', 'pnl', 'p/l', 'profit/loss', 'profit&loss'].some((k) => h.includes(k.replace(/\s+/g, '')))) continue;
+    // A real trade-log P&L column has many numeric values running down it —
+    // not just a single summary figure next to a "Net P&L:"-style label, or
+    // a header that says P&L on a sheet that only has a handful of rows.
+    let numericCount = 0;
+    for (let r = headerIdx + 1; r < matrix.length; r++) {
+      const v = rawCellToPrimitive(matrix[r] ? matrix[r][c] : null);
+      if (typeof v === 'number') numericCount++;
+    }
+    if (numericCount >= 10) return true;
+  }
+  return false;
+}
+
 function pickBestSheet(sheets) {
   if (sheets.length === 1) return sheets[0];
-  const named = sheets.filter((s) => /trade|log|journal/i.test(s.name || ''));
-  const pool = named.length ? named : sheets;
+  const positivelyNamed = sheets.filter((s) => /trade|log|journal/i.test(s.name || ''));
+  // A sheet clearly named as a derived analysis/summary tab (Stats, Setup
+  // Analysis, Dashboard, ...) can easily contain its own wide breakdown
+  // table with as many or more rows than the real trade log — row count
+  // and "has a P&L-looking column" alone aren't decisive against that. If
+  // any sheet isn't named like one of these, prefer that group first.
+  const notAnalysisNamed = sheets.filter((s) => !/stat|summary|analysis|dashboard|overview|report/i.test(s.name || ''));
+  const pool = positivelyNamed.length ? positivelyNamed : (notAnalysisNamed.length ? notAnalysisNamed : sheets);
   let best = pool[0], bestScore = -1;
   for (const s of pool) {
     const headerIdx = detectHeaderRowIndex(s.matrix);
     const rows = countDataRows(s.matrix, headerIdx);
-    if (rows > bestScore) { bestScore = rows; best = s; }
+    const hasPnl = sheetHasPlausiblePnlHeader(s.matrix, headerIdx);
+    const score = rows + (hasPnl ? 100000 : 0);
+    if (score > bestScore) { bestScore = score; best = s; }
   }
   return best;
 }
@@ -1264,6 +1323,7 @@ const METRIC_LIKE_EXACT_HINTS = ['growth', 'chart', 'link', 'url', 'note', 'note
 
 function isMetricLikeHeader(h, pnlField, outcomeField, dateField) {
   if (h === pnlField || h === outcomeField || h === dateField) return true;
+  if (ACCOUNT_MECHANICS_HEADER_SET.has(h)) return true;
   const hl = h.toLowerCase();
   if (hl.includes('%') && (hl.includes('p&l') || hl.includes('pnl') || hl.includes('p/l') || hl.includes('profit'))) return true;
   if (hl.includes('account') && (hl.includes('size') || hl.includes('balance'))) return true;
@@ -1722,6 +1782,15 @@ function looksLikeYesNo(distinctValues) {
 /* ============================================================
    GLOBAL STATE
    ============================================================ */
+function getDefaultAccountMechanicsConfig() {
+  return {
+    baseRiskPct: 0.02, riskStepGrowthPct: 1.0,
+    milestone1GrowthPct: 1.5, milestone1TransferPct: 0.5,
+    milestone2GrowthPct: 2.0, milestone2TransferPct: 0.5,
+    ongoingSkimPct: 0.25,
+  };
+}
+
 const state = {
   dataset: null,
   sourceMeta: { mode: 'embedded', fileName: '', lastRefresh: null },
@@ -1731,6 +1800,7 @@ const state = {
   startingBalanceOverride: null, // null = auto-detect from workbook; a number = user-configured
   cloudSyncAvailable: false, // true once /api/trades responds (Netlify deployment w/ the trades Function)
   syncStatus: null, // null | 'synced' | 'syncing' | 'error'
+  accountMechanicsConfig: getDefaultAccountMechanicsConfig(),
   setup: {
     mode: 'single', // 'single' | 'signature'
     single: { fields: null, search: '', sortKey: 'totalPnl', sortDir: 'desc', minTrades: 1 },
@@ -1925,10 +1995,12 @@ function renderKpis() {
     </div>`).join('');
 }
 
-function guessBalanceField() {
-  const m = state.dataset.meta;
+function guessBalanceFieldForMeta(m) {
   const match = m.columns.find((c) => /account.*(size|balance)|balance/i.test(c.header) && c.type !== 'categorical');
   return match ? match.header : null;
+}
+function guessBalanceField() {
+  return guessBalanceFieldForMeta(state.dataset.meta);
 }
 
 function getEquityCurve() {
@@ -2398,11 +2470,12 @@ function openTradeDetail(sourceRow) {
   const factorItems = m.factorFields.filter((f) => f !== directionField && f !== tokenField).map((f) => `
     <div class="detail-item"><span class="k">${esc(f)}</span><span class="v">${renderRawFieldValue(rec[f])}</span></div>`).join('');
 
-  const resultFields = [TRADE_RISK_HEADER, profitPassedField, m.outcomeField, m.pnlField, pctField, m.dateField, guessBalanceField()].filter(Boolean);
+  const resultFields = [ACCOUNT_MECHANICS_HEADERS.tradeAmount, ACCOUNT_MECHANICS_HEADERS.riskNextTrade, ACCOUNT_MECHANICS_HEADERS.tradeAcctBalance, profitPassedField, m.outcomeField, m.pnlField, pctField, m.dateField, guessBalanceField()].filter(Boolean);
+  const accountTrackingFields = [ACCOUNT_MECHANICS_HEADERS.toHolding, ACCOUNT_MECHANICS_HEADERS.holdingBalance, ACCOUNT_MECHANICS_HEADERS.toTradeAcct, ACCOUNT_MECHANICS_HEADERS.accountBalance, ACCOUNT_MECHANICS_HEADERS.accountGrowth];
 
   const otherFields = m.headers.filter((h) =>
     h !== m.pnlField && h !== m.outcomeField && h !== m.dateField && h !== guessBalanceField() && h !== pctField &&
-    h !== directionField && h !== tokenField && h !== chartField && h !== profitPassedField && h !== TRADE_RISK_HEADER &&
+    h !== directionField && h !== tokenField && h !== chartField && h !== profitPassedField && !ACCOUNT_MECHANICS_HEADER_SET.has(h) &&
     !m.factorFields.includes(h) &&
     rec[h] != null
   );
@@ -2459,6 +2532,13 @@ function openTradeDetail(sourceRow) {
             : `<div class="empty-state" style="padding:20px 12px;"><p>No chart screenshot attached to this trade.</p></div>`}
         </div>` : ''}
 
+        <div class="detail-section">
+          <div class="detail-section-title">Account tracking</div>
+          <div class="detail-grid">
+            ${accountTrackingFields.map((f) => `<div class="detail-item"><span class="k">${esc(f)}</span><span class="v">${renderResultFieldValue(f, rec)}</span></div>`).join('')}
+          </div>
+        </div>
+
         ${otherFields.length ? `
         <div class="detail-section">
           <div class="detail-section-title">Other source fields</div>
@@ -2498,9 +2578,17 @@ function renderRawFieldValue(v) {
   return esc(v);
 }
 
+const ACCOUNT_MECHANICS_MONEY_HEADERS = new Set([
+  ACCOUNT_MECHANICS_HEADERS.tradeAmount, ACCOUNT_MECHANICS_HEADERS.tradeAcctBalance,
+  ACCOUNT_MECHANICS_HEADERS.toHolding, ACCOUNT_MECHANICS_HEADERS.holdingBalance,
+  ACCOUNT_MECHANICS_HEADERS.toTradeAcct, ACCOUNT_MECHANICS_HEADERS.accountBalance,
+]);
+
 function renderResultFieldValue(header, rec) {
   const v = rec[header];
-  if (header === TRADE_RISK_HEADER) return v == null ? '<span class="text-3">—</span>' : fmtMoney(v);
+  if (ACCOUNT_MECHANICS_MONEY_HEADERS.has(header)) return v == null ? '<span class="text-3">—</span>' : fmtMoney(v);
+  if (header === ACCOUNT_MECHANICS_HEADERS.riskNextTrade) return v == null ? '<span class="text-3">—</span>' : fmtPct(v);
+  if (header === ACCOUNT_MECHANICS_HEADERS.accountGrowth) return v == null ? '<span class="text-3">—</span>' : `<span class="${pnlClass(v)}">${fmtPct(v, { plus: true })}</span>`;
   if (/%/.test(header) && /p&l|pnl|p\/l|profit/i.test(header)) {
     return v == null ? '<span class="text-3">—</span>' : `<span class="${pnlClass(v)}">${fmtPct(v, { plus: true })}</span>`;
   }
@@ -2524,6 +2612,7 @@ function renderEquityTab() {
   const eq = getEquityCurve();
   const usingBalance = eq.startingBalanceSource !== 'assumed-zero';
   const curveLabel = usingBalance ? 'Account Balance' : 'Cumulative P&L';
+  const cfg = state.accountMechanicsConfig;
 
   const startingBalanceControl = `
     <div class="card">
@@ -2541,12 +2630,55 @@ function renderEquityTab() {
       </div>
     </div>`;
 
+  const settingsControl = `
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Position Sizing &amp; Holding Rules</div>
+          <div class="card-desc">Changing these recalculates Trade Amount, Risk, and Holding transfers for every trade — a "what if" view, not a rewrite of your original workbook.</div>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="settings-grid">
+          <div class="settings-item">
+            <label>Base risk</label>
+            <div class="settings-desc">starting position size, % of trade acct</div>
+            <div class="settings-input"><input type="number" step="0.1" id="cfgBaseRisk" value="${(cfg.baseRiskPct * 100).toFixed(2)}"><span>%</span></div>
+          </div>
+          <div class="settings-item">
+            <label>Risk step</label>
+            <div class="settings-desc">growth needed to add another risk step</div>
+            <div class="settings-input"><input type="number" step="1" id="cfgRiskStep" value="${(cfg.riskStepGrowthPct * 100).toFixed(0)}"><span>%</span></div>
+          </div>
+          <div class="settings-item">
+            <label>Milestone 1</label>
+            <div class="settings-desc">growth trigger → % of start to Holding</div>
+            <div class="settings-input"><input type="number" step="1" id="cfgM1Growth" value="${(cfg.milestone1GrowthPct * 100).toFixed(0)}"><span>%</span> → <input type="number" step="1" id="cfgM1Transfer" value="${(cfg.milestone1TransferPct * 100).toFixed(0)}"><span>%</span></div>
+          </div>
+          <div class="settings-item">
+            <label>Milestone 2</label>
+            <div class="settings-desc">growth trigger → % of start to Holding</div>
+            <div class="settings-input"><input type="number" step="1" id="cfgM2Growth" value="${(cfg.milestone2GrowthPct * 100).toFixed(0)}"><span>%</span> → <input type="number" step="1" id="cfgM2Transfer" value="${(cfg.milestone2TransferPct * 100).toFixed(0)}"><span>%</span></div>
+          </div>
+          <div class="settings-item">
+            <label>Ongoing skim</label>
+            <div class="settings-desc">% of each win → Holding, past milestone 2</div>
+            <div class="settings-input"><input type="number" step="1" id="cfgSkim" value="${(cfg.ongoingSkimPct * 100).toFixed(0)}"><span>%</span></div>
+          </div>
+          <div class="settings-item" style="justify-content:flex-end; align-items:flex-end;">
+            <button class="btn btn-sm btn-ghost" id="cfgResetDefaults">Reset to defaults</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
   if (eq.points.length === 0) {
-    root.innerHTML = startingBalanceControl + `<div class="card"><div class="card-body">${emptyState(
+    root.innerHTML = startingBalanceControl + settingsControl + `<div class="card"><div class="card-body">${emptyState(
       'No usable trades to chart',
       'Add a trade with a numeric P&L, or import a workbook with usable P&L values, to see the equity curve and drawdown.'
     )}</div></div>`;
     wireStartingBalanceControl();
+    wireAccountMechanicsSettings();
     return;
   }
 
@@ -2561,13 +2693,21 @@ function renderEquityTab() {
     startingBalanceNote = `No account-size / balance column was found, so the curve starts at $0.00 and shows cumulative P&L rather than an absolute balance. Set a starting balance above if you\u2019d like an absolute account curve instead.`;
   }
 
-  root.innerHTML = startingBalanceControl + `
+  const mechMap = computeAccountMechanicsFromEquity(eq, cfg);
+  const stackedPoints = eq.points.map((p) => {
+    const m = mechMap.get(p.sourceRow);
+    return { sourceRow: p.sourceRow, date: p.date, tradeAcctBalance: m.tradeAcctBalance, holdingBalance: m.holdingBalance };
+  });
+  const lastMech = mechMap.get(eq.points[eq.points.length - 1].sourceRow);
+
+  root.innerHTML = startingBalanceControl + settingsControl + `
     <details class="assumptions">
       <summary>Assumptions &amp; data notes</summary>
       <ul>
         <li>Only trades with a numeric ${esc(state.dataset.meta.pnlField || 'P&L')} value are included (${fmtInt(eq.points.length)} of ${fmtInt(state.dataset.meta.recordCount)} rows).</li>
         <li>Trades are ordered chronologically by ${state.dataset.meta.dateField ? `"${esc(state.dataset.meta.dateField)}"` : 'row order (no date column detected)'}; trades sharing the same date keep their original sheet order, since the workbook has no intraday timestamp.</li>
         <li>${startingBalanceNote}</li>
+        <li>Trade Amount, Risk Next Trade, Trade Acct Balance, and the Holding account fields are computed independently by replaying the same rules as your workbook's own formulas (validated to match it row for row) — not read from the sheet's own columns — so they update correctly for new trades and for the settings above.</li>
         ${noDateCount ? `<li>${noDateCount} usable trade(s) had no parseable date and are placed at the end of the sequence.</li>` : ''}
       </ul>
     </details>
@@ -2579,20 +2719,26 @@ function renderEquityTab() {
       <div class="kpi-card"><div class="kpi-label">Max Drawdown</div><div class="kpi-value down">${fmtMoney(eq.maxDrawdown)}</div><div class="kpi-sub">${fmtPct(eq.maxDrawdownPct)}</div></div>
       <div class="kpi-card"><div class="kpi-label">Best / Worst Trade</div><div class="kpi-value" style="font-size:15px;"><span class="up">${fmtMoney(eq.bestTrade._pnl, { plus: true })}</span> / <span class="down">${fmtMoney(eq.worstTrade._pnl)}</span></div></div>
       <div class="kpi-card"><div class="kpi-label">Best Win / Worst Loss Streak</div><div class="kpi-value" style="font-size:15px;">${eq.bestWinStreak} / ${eq.worstLossStreak}</div></div>
+      <div class="kpi-card"><div class="kpi-label">Trade Acct / Holding Now</div><div class="kpi-value" style="font-size:15px;"><span style="color:var(--amber-strong);">${fmtMoney(lastMech.tradeAcctBalance)}</span> / <span style="color:var(--blue);">${fmtMoney(lastMech.holdingBalance)}</span></div></div>
+      <div class="kpi-card"><div class="kpi-label">Current Risk Next Trade</div><div class="kpi-value" style="font-size:15px;">${fmtPct(lastMech.riskNextTrade)}</div></div>
     </div>
 
     <div class="card">
       <div class="card-head">
-        <div><div class="card-title">${esc(curveLabel)}</div><div class="card-desc">Running total after each usable trade, in chronological order.</div></div>
+        <div><div class="card-title">Trade Account &amp; Holding Account</div><div class="card-desc">Stacked — their combined height is the total Account Balance at each point.</div></div>
       </div>
       <div class="card-body">
         <div class="chart-wrap" id="equityChartWrap"></div>
+        <div class="legend" style="margin-top:10px;">
+          <span><span class="dot" style="background:var(--amber)"></span> Trade Account</span>
+          <span><span class="dot" style="background:var(--blue)"></span> Holding Account</span>
+        </div>
       </div>
     </div>
 
     <div class="card">
       <div class="card-head">
-        <div><div class="card-title">Drawdown</div><div class="card-desc">Distance below the running peak of the ${esc(curveLabel).toLowerCase()}.</div></div>
+        <div><div class="card-title">Drawdown</div><div class="card-desc">Distance below the running peak of the total ${esc(curveLabel).toLowerCase()}.</div></div>
       </div>
       <div class="card-body">
         <div class="chart-wrap" id="drawdownChartWrap"></div>
@@ -2600,13 +2746,49 @@ function renderEquityTab() {
     </div>
   `;
 
-  buildLineChart(document.getElementById('equityChartWrap'), eq.points, {
-    valueKey: 'equity', color: 'var(--amber)', fillFrom: 'zero-or-min', label: curveLabel, isDrawdown: false,
-  });
+  buildStackedAreaChart(document.getElementById('equityChartWrap'), stackedPoints);
   buildLineChart(document.getElementById('drawdownChartWrap'), eq.points, {
     valueKey: 'drawdown', color: 'var(--down)', fillFrom: 'top', label: 'Drawdown', isDrawdown: true,
   });
   wireStartingBalanceControl();
+  wireAccountMechanicsSettings();
+}
+
+function wireAccountMechanicsSettings() {
+  const bindings = [
+    ['cfgBaseRisk', 'baseRiskPct'], ['cfgRiskStep', 'riskStepGrowthPct'],
+    ['cfgM1Growth', 'milestone1GrowthPct'], ['cfgM1Transfer', 'milestone1TransferPct'],
+    ['cfgM2Growth', 'milestone2GrowthPct'], ['cfgM2Transfer', 'milestone2TransferPct'],
+    ['cfgSkim', 'ongoingSkimPct'],
+  ];
+  let anyBound = false;
+  bindings.forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    anyBound = true;
+    el.addEventListener('change', () => {
+      const n = Number(el.value);
+      if (Number.isFinite(n)) {
+        state.accountMechanicsConfig[key] = n / 100;
+        recomputeAccountMechanicsValues(state.dataset);
+        persistWorkingState();
+        if (state.cloudSyncAvailable) pushSharedState();
+        renderEquityTab();
+        renderKpis();
+      }
+    });
+  });
+  const resetBtn = document.getElementById('cfgResetDefaults');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => {
+      state.accountMechanicsConfig = getDefaultAccountMechanicsConfig();
+      recomputeAccountMechanicsValues(state.dataset);
+      persistWorkingState();
+      if (state.cloudSyncAvailable) pushSharedState();
+      renderEquityTab();
+      renderKpis();
+    });
+  }
 }
 
 function wireStartingBalanceControl() {
@@ -2620,6 +2802,7 @@ function wireStartingBalanceControl() {
       const n = Number(raw);
       if (Number.isFinite(n)) state.startingBalanceOverride = n;
     }
+    recomputeAccountMechanicsValues(state.dataset);
     persistWorkingState();
     if (state.cloudSyncAvailable) pushSharedState();
     renderEquityTab();
@@ -2628,6 +2811,7 @@ function wireStartingBalanceControl() {
   if (autoBtn) {
     autoBtn.addEventListener('click', () => {
       state.startingBalanceOverride = null;
+      recomputeAccountMechanicsValues(state.dataset);
       persistWorkingState();
       if (state.cloudSyncAvailable) pushSharedState();
       renderEquityTab();
@@ -2637,6 +2821,96 @@ function wireStartingBalanceControl() {
 }
 
 /* ---- minimal, dependency-free SVG line/area chart with hover ---- */
+// Stacked area chart specifically for Trade Account (bottom) + Holding
+// Account (stacked on top) — their combined height is always the total
+// Account Balance, so this shows the split and the total at a glance.
+function buildStackedAreaChart(container, points) {
+  const W = 960, H = 300, padL = 56, padR = 16, padT = 16, padB = 28;
+  const innerW = W - padL - padR, innerH = H - padT - padB;
+
+  const totals = points.map((p) => p.tradeAcctBalance + p.holdingBalance);
+  let minV = Math.min(0, ...totals), maxV = Math.max(0, ...totals);
+  if (minV === maxV) { minV -= 1; maxV += 1; }
+  const pad = (maxV - minV) * 0.08;
+  minV -= pad; maxV += pad;
+
+  const x = (i) => padL + (points.length === 1 ? innerW / 2 : (i / (points.length - 1)) * innerW);
+  const y = (v) => padT + innerH - ((v - minV) / (maxV - minV)) * innerH;
+  const zeroY = y(0);
+
+  const tradeTopPath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${x(i).toFixed(2)} ${y(p.tradeAcctBalance).toFixed(2)}`).join(' ');
+  const tradeAreaPath = `${tradeTopPath} L ${x(points.length - 1).toFixed(2)} ${zeroY.toFixed(2)} L ${x(0).toFixed(2)} ${zeroY.toFixed(2)} Z`;
+
+  const holdTopPath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${x(i).toFixed(2)} ${y(p.tradeAcctBalance + p.holdingBalance).toFixed(2)}`).join(' ');
+  const holdBottomPathRev = points.slice().reverse().map((p, i) => `L ${x(points.length - 1 - i).toFixed(2)} ${y(p.tradeAcctBalance).toFixed(2)}`).join(' ');
+  const holdAreaPath = `${holdTopPath} ${holdBottomPathRev} Z`;
+
+  const gridN = 4;
+  let gridLines = '';
+  for (let i = 0; i <= gridN; i++) {
+    const v = minV + ((maxV - minV) * i) / gridN;
+    const gy = y(v);
+    gridLines += `<line x1="${padL}" y1="${gy.toFixed(2)}" x2="${W - padR}" y2="${gy.toFixed(2)}" stroke="var(--border)" stroke-width="1"/>`;
+    gridLines += `<text x="${padL - 8}" y="${(gy + 3).toFixed(2)}" text-anchor="end" font-size="10" fill="var(--text-3)" font-family="var(--font-mono)">${fmtMoney(v)}</text>`;
+  }
+  const idxs = points.length > 1 ? [0, Math.floor((points.length - 1) / 2), points.length - 1] : [0];
+  let xLabels = '';
+  for (const i of idxs) {
+    const p = points[i];
+    const label = p.date ? fmtDateUTC(p.date, { short: true }) : `#${i + 1}`;
+    xLabels += `<text x="${x(i).toFixed(2)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="var(--text-3)" font-family="var(--font-mono)">${esc(label)}</text>`;
+  }
+
+  const uid = 'stack-' + Math.random().toString(36).slice(2, 9);
+  const svg = `
+    <svg class="chart-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" id="${uid}-svg">
+      ${gridLines}
+      <line x1="${padL}" y1="${zeroY.toFixed(2)}" x2="${W - padR}" y2="${zeroY.toFixed(2)}" stroke="var(--border-strong)" stroke-width="1" stroke-dasharray="3,3"/>
+      <path d="${tradeAreaPath}" fill="var(--amber)" fill-opacity="0.28" stroke="var(--amber)" stroke-width="1.5"/>
+      <path d="${holdAreaPath}" fill="var(--blue)" fill-opacity="0.30" stroke="var(--blue)" stroke-width="1.5"/>
+      ${xLabels}
+      <g id="${uid}-hover" style="display:none;">
+        <line x1="0" y1="${padT}" x2="0" y2="${padT + innerH}" stroke="var(--border-strong)" stroke-width="1"/>
+      </g>
+    </svg>
+    <div class="chart-tooltip" id="${uid}-tip"></div>
+  `;
+  container.innerHTML = svg;
+
+  const svgEl = document.getElementById(`${uid}-svg`);
+  const hoverG = document.getElementById(`${uid}-hover`);
+  const hoverLine = hoverG.querySelector('line');
+  const tip = document.getElementById(`${uid}-tip`);
+
+  function onMove(evt) {
+    const rect = svgEl.getBoundingClientRect();
+    const clientX = evt.touches ? evt.touches[0].clientX : evt.clientX;
+    const relX = ((clientX - rect.left) / rect.width) * W;
+    let idx = Math.round(((relX - padL) / innerW) * (points.length - 1));
+    idx = Math.max(0, Math.min(points.length - 1, idx));
+    const p = points[idx];
+    const px = x(idx);
+    hoverG.style.display = '';
+    hoverLine.setAttribute('x1', px); hoverLine.setAttribute('x2', px);
+    tip.classList.add('show');
+    const tipLeftPct = (px / W) * 100;
+    tip.style.left = tipLeftPct > 70 ? 'auto' : `calc(${tipLeftPct}% + 10px)`;
+    tip.style.right = tipLeftPct > 70 ? `calc(${100 - tipLeftPct}% + 10px)` : 'auto';
+    tip.style.top = '8px';
+    tip.innerHTML = `
+      <div class="t-date">${p.date ? esc(fmtDateUTC(p.date)) : 'Row ' + p.sourceRow}</div>
+      <div class="t-row"><span class="text-2">Trade Account</span><b style="color:var(--amber-strong);">${fmtMoney(p.tradeAcctBalance)}</b></div>
+      <div class="t-row"><span class="text-2">Holding Account</span><b style="color:var(--blue);">${fmtMoney(p.holdingBalance)}</b></div>
+      <div class="t-row"><span class="text-2">Total</span><b>${fmtMoney(p.tradeAcctBalance + p.holdingBalance)}</b></div>
+    `;
+  }
+  function onLeave() { hoverG.style.display = 'none'; tip.classList.remove('show'); }
+  svgEl.addEventListener('mousemove', onMove);
+  svgEl.addEventListener('mouseleave', onLeave);
+  svgEl.addEventListener('touchstart', onMove, { passive: true });
+  svgEl.addEventListener('touchmove', onMove, { passive: true });
+}
+
 function buildLineChart(container, points, opts) {
   const W = 960, H = opts.isDrawdown ? 220 : 300, padL = 56, padR = 16, padT = 16, padB = 28;
   const innerW = W - padL - padR, innerH = H - padT - padB;
@@ -2744,6 +3018,7 @@ async function handleFileUpload(file) {
     clearWorkingState();
     state.hasManualEdits = false;
     state.startingBalanceOverride = null;
+    state.accountMechanicsConfig = getDefaultAccountMechanicsConfig();
     setDataset(dataset, { mode: 'uploaded', fileName: file.name });
   } catch (err) {
     console.error(err);
@@ -2832,6 +3107,7 @@ async function discardEditsAndReload() {
   clearWorkingState();
   state.hasManualEdits = false;
   state.startingBalanceOverride = null;
+  state.accountMechanicsConfig = getDefaultAccountMechanicsConfig();
   if (state.serverPoll.active && state.serverPoll.manifestFile) {
     state.serverPoll.lastHash = null; // force re-apply even if the file content matches what we last hashed
     await checkServerFileForUpdate(true);
@@ -2846,6 +3122,7 @@ async function discardEditsAndReload() {
    EVENT WIRING
    ============================================================ */
 function wireStaticEvents() {
+  document.getElementById('btnAddTradeGlobal').addEventListener('click', () => openTradeForm('add'));
   document.getElementById('btnUpload').addEventListener('click', () => document.getElementById('fileInput').click());
   document.getElementById('fileInput').addEventListener('change', (e) => {
     const f = e.target.files[0];
@@ -2871,6 +3148,7 @@ function wireStaticEvents() {
       clearWorkingState();
       state.hasManualEdits = false;
       state.startingBalanceOverride = null;
+      state.accountMechanicsConfig = getDefaultAccountMechanicsConfig();
       const snap = JSON.parse(JSON.stringify(EMBEDDED_SNAPSHOT_RAW));
       setDataset(reviveDataset(snap), { mode: 'embedded', fileName: snap.meta.fileName });
     };
@@ -3141,6 +3419,7 @@ async function tryBootstrapFromCloud() {
 
   if (shared && shared.dataset) {
     state.startingBalanceOverride = shared.startingBalanceOverride ?? null;
+    state.accountMechanicsConfig = shared.accountMechanicsConfig ?? state.accountMechanicsConfig;
     state.hasManualEdits = false;
     setDataset(reviveDataset(shared.dataset), {
       mode: shared.sourceMeta?.mode || 'cloud',
@@ -3166,6 +3445,7 @@ async function bootstrap() {
   const saved = loadWorkingState();
   if (saved) {
     state.startingBalanceOverride = saved.startingBalanceOverride ?? null;
+    state.accountMechanicsConfig = saved.accountMechanicsConfig ?? state.accountMechanicsConfig;
     state.hasManualEdits = true;
     setDataset(saved.dataset, { mode: saved.sourceMeta.mode, fileName: saved.sourceMeta.fileName });
     showTransientBanner('info', 'Restored your edited ledger from earlier on this device. <button class="link-btn" data-reload-from-disk="1" id="discardSavedStateBtn">Discard and start over</button>', { allowHtml: true });
@@ -3181,26 +3461,146 @@ async function bootstrap() {
 /* ============================================================
    SYNTHETIC FIELDS (dashboard-native, not from the workbook)
    ============================================================ */
-const TRADE_RISK_HEADER = 'Trade Risk';
-const TRADE_RISK_PCT = 0.02;
+// ============================================================
+// ACCOUNT MECHANICS — dynamic position sizing + Holding account
+// ============================================================
+// Replicates (and validated bit-for-bit against) the workbook's own
+// Trade Amount / Trade Acct Balance / Risk Next Trade / To Holding /
+// Holding Balance / To Trade Acct / Account Balance / Account Growth
+// formula chain, so it works identically for historical trades AND for
+// any trade added/edited through the dashboard — and responds live to the
+// configurable Position Sizing & Holding Rules settings.
+
+// One trade's worth of the formula chain, given the state left over from the
+// trade before it. Pure function — reused for historical replay, the live
+// Add/Edit form preview, and the settings-change recompute, so there is
+// exactly one place this logic can go wrong.
+function computeMechanicsPreview(basis, pnl) {
+  const { prevTradeAcctBalance, prevRiskPct, prevAccountBalance, prevHoldingBalance, startingBalance, config } = basis;
+  const tradeAmount = prevTradeAcctBalance * prevRiskPct;
+  const hasPnl = pnl != null && Number.isFinite(pnl);
+  const effectivePnl = hasPnl ? pnl : 0;
+  const accountBalance = prevAccountBalance + effectivePnl;
+  const accountGrowth = startingBalance ? accountBalance / startingBalance - 1 : 0;
+  let toHolding = 0;
+  if (accountBalance >= startingBalance * config.milestone1GrowthPct && prevAccountBalance < startingBalance * config.milestone1GrowthPct) {
+    toHolding = startingBalance * config.milestone1TransferPct;
+  } else if (accountBalance >= startingBalance * config.milestone2GrowthPct && prevAccountBalance < startingBalance * config.milestone2GrowthPct) {
+    toHolding = startingBalance * config.milestone2TransferPct;
+  } else if (accountBalance >= startingBalance * config.milestone2GrowthPct && effectivePnl > 0) {
+    toHolding = effectivePnl * config.ongoingSkimPct;
+  }
+  const toTradeAcct = effectivePnl < 0 ? Math.min(Math.abs(effectivePnl), prevHoldingBalance) : 0;
+  const holdingBalance = prevHoldingBalance + toHolding - toTradeAcct;
+  const tradeAcctBalance = accountBalance - holdingBalance;
+  const riskNextTrade = config.baseRiskPct * (1 + Math.max(0, Math.floor(accountGrowth / config.riskStepGrowthPct)));
+  return {
+    tradeAmount, riskNextTrade, tradeAcctBalance,
+    toHolding: hasPnl ? toHolding : null,
+    holdingBalance: hasPnl ? holdingBalance : prevHoldingBalance,
+    toTradeAcct: hasPnl ? toTradeAcct : null,
+    accountBalance: hasPnl ? accountBalance : prevAccountBalance,
+    accountGrowth: hasPnl ? accountGrowth : (startingBalance ? prevAccountBalance / startingBalance - 1 : 0),
+  };
+}
+
+// Walks every usable trade in chronological order (same ordering as the
+// equity curve, so "Account Balance" here always equals the equity curve's
+// "equity" for the same trade) and returns a Map from _sourceRow to that
+// trade's full set of computed account-mechanics values.
+function computeAccountMechanicsFromEquity(eq, config) {
+  const startingBalance = eq.startingBalance;
+  let basis = {
+    prevTradeAcctBalance: startingBalance, prevRiskPct: config.baseRiskPct,
+    prevAccountBalance: startingBalance, prevHoldingBalance: 0, startingBalance, config,
+  };
+  const results = new Map();
+  for (const pt of eq.points) {
+    const computed = computeMechanicsPreview(basis, pt.pnl);
+    results.set(pt.sourceRow, computed);
+    basis = {
+      prevTradeAcctBalance: computed.tradeAcctBalance, prevRiskPct: computed.riskNextTrade,
+      prevAccountBalance: computed.accountBalance, prevHoldingBalance: computed.holdingBalance,
+      startingBalance, config,
+    };
+  }
+  return results;
+}
+
+// The "basis" (state left over from the trade before) for a specific form
+// session — the first trade ever, editing an existing trade, or adding a
+// new one (which previews against the current overall latest state).
+function computeAccountMechanicsBasis(mode, sourceRow) {
+  const eq = getEquityCurve();
+  const config = state.accountMechanicsConfig;
+  const startingBalance = eq.startingBalance;
+  const seedBasis = { prevTradeAcctBalance: startingBalance, prevRiskPct: config.baseRiskPct, prevAccountBalance: startingBalance, prevHoldingBalance: 0, startingBalance, config };
+  if (!eq.points.length) return seedBasis;
+  const mechMap = computeAccountMechanicsFromEquity(eq, config);
+
+  if (mode === 'edit' && sourceRow != null) {
+    const idx = eq.points.findIndex((p) => p.sourceRow === sourceRow);
+    if (idx > 0) {
+      const prev = mechMap.get(eq.points[idx - 1].sourceRow);
+      return { prevTradeAcctBalance: prev.tradeAcctBalance, prevRiskPct: prev.riskNextTrade, prevAccountBalance: prev.accountBalance, prevHoldingBalance: prev.holdingBalance, startingBalance, config };
+    }
+    return seedBasis;
+  }
+  const last = mechMap.get(eq.points[eq.points.length - 1].sourceRow);
+  return { prevTradeAcctBalance: last.tradeAcctBalance, prevRiskPct: last.riskNextTrade, prevAccountBalance: last.accountBalance, prevHoldingBalance: last.holdingBalance, startingBalance, config };
+}
+
+// Writes the freshly computed values back onto every usable-P&L record
+// under the canonical header names, overwriting whatever the source
+// workbook itself had there (matching how Trade P&L's own equity curve is
+// independently recomputed rather than trusted from the sheet — these are
+// all formula-derived, not raw source data, and need to update live for
+// new trades and configurable settings regardless of what the sheet says).
+function recomputeAccountMechanicsValues(dataset) {
+  const eq = equityCurve(dataset.records, { balanceField: guessBalanceFieldForMeta(dataset.meta), startingBalance: state.startingBalanceOverride ?? undefined });
+  const mechMap = computeAccountMechanicsFromEquity(eq, state.accountMechanicsConfig);
+  for (const rec of dataset.records) {
+    const computed = mechMap.get(rec._sourceRow);
+    for (const [key, header] of Object.entries(ACCOUNT_MECHANICS_HEADERS)) {
+      rec[header] = computed ? computed[key] : null;
+    }
+  }
+}
 
 // Idempotent — safe to call every time a dataset is loaded, including one
 // already carrying these fields from a previous session (restored from
 // local storage).
 function injectSyntheticFields(dataset) {
   const m = dataset.meta;
-  if (!m.headers.includes(TRADE_RISK_HEADER)) {
-    const dateIdx = m.dateField ? m.headers.indexOf(m.dateField) : -1;
-    const insertAt = dateIdx >= 0 ? dateIdx + 1 : 0;
-    m.headers.splice(insertAt, 0, TRADE_RISK_HEADER);
+
+  function ensureHeader(header, insertAt) {
+    if (m.headers.includes(header)) return;
+    m.headers.splice(insertAt, 0, header);
     m.columns.splice(insertAt, 0, {
-      header: TRADE_RISK_HEADER, type: 'numeric', nonBlankCount: 0, numericRatio: 1,
+      header, type: 'numeric', nonBlankCount: 0, numericRatio: 1,
       distinctCount: 0, distinctValues: [], isFactorCandidate: false, isMetricLike: true,
     });
   }
-  for (const rec of dataset.records) {
-    if (!(TRADE_RISK_HEADER in rec)) rec[TRADE_RISK_HEADER] = null;
+
+  const dateIdx = m.dateField ? m.headers.indexOf(m.dateField) : -1;
+  let insertAt = dateIdx >= 0 ? dateIdx + 1 : 0;
+  for (const h of [ACCOUNT_MECHANICS_HEADERS.tradeAmount, ACCOUNT_MECHANICS_HEADERS.tradeAcctBalance, ACCOUNT_MECHANICS_HEADERS.riskNextTrade]) {
+    ensureHeader(h, insertAt);
+    insertAt = m.headers.indexOf(h) + 1;
   }
+  const chartField = findChartField(m);
+  let tailInsertAt = chartField ? m.headers.indexOf(chartField) + 1 : m.headers.length;
+  for (const h of [ACCOUNT_MECHANICS_HEADERS.toHolding, ACCOUNT_MECHANICS_HEADERS.holdingBalance, ACCOUNT_MECHANICS_HEADERS.toTradeAcct, ACCOUNT_MECHANICS_HEADERS.accountBalance, ACCOUNT_MECHANICS_HEADERS.accountGrowth]) {
+    ensureHeader(h, tailInsertAt);
+    tailInsertAt = m.headers.indexOf(h) + 1;
+  }
+
+  for (const rec of dataset.records) {
+    for (const h of ACCOUNT_MECHANICS_HEADER_SET) {
+      if (!(h in rec)) rec[h] = null;
+    }
+  }
+  recomputeAccountMechanicsValues(dataset);
 }
 
 
@@ -3236,7 +3636,7 @@ function getFormFieldSpecs() {
     if (!kind) {
       if (header === m.pnlField) kind = 'pnl';
       else if (header === m.dateField) kind = 'date';
-      else if (header === TRADE_RISK_HEADER) kind = 'calculated';
+      else if (ACCOUNT_MECHANICS_HEADER_SET.has(header)) kind = 'calculated';
       else if (col && col.type === 'image') kind = 'image';
       else if (dropdown && dropdown.length) kind = 'select';
       else if (col && col.type === 'categorical' && col.distinctCount > 0 && col.distinctCount <= 25) kind = 'select-observed';
@@ -3254,7 +3654,9 @@ function getFormFieldSpecs() {
   const profitPassedField = findProfitPassedField(m);
 
   if (m.dateField) addSpec(m.dateField);
-  addSpec(TRADE_RISK_HEADER, 'calculated', 'tradeRisk');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.tradeAmount, 'calculated', 'tradeAmount');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.riskNextTrade, 'calculated', 'riskNextTrade');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.tradeAcctBalance, 'calculated', 'tradeAcctBalance');
   if (tokenField) addSpec(tokenField);
   if (directionField) addSpec(directionField);
   for (const f of m.factorFields) addSpec(f);
@@ -3266,6 +3668,11 @@ function getFormFieldSpecs() {
   // of asking for two numbers that need to agree with each other.
   if (pctField) addSpec(pctField, 'calculated', 'pnlPct');
   if (chartField) addSpec(chartField, 'image');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.toHolding, 'calculated', 'toHolding');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.holdingBalance, 'calculated', 'holdingBalance');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.toTradeAcct, 'calculated', 'toTradeAcct');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.accountBalance, 'calculated', 'accountBalance');
+  addSpec(ACCOUNT_MECHANICS_HEADERS.accountGrowth, 'calculated', 'accountGrowth');
 
   return specs;
 }
@@ -3279,38 +3686,43 @@ function getFormFieldSpecs() {
 // specific trade in the chronological sequence — the number that would
 // actually have driven sizing at the time, and one that stays historically
 // accurate even if later trades are added/edited/removed.
-function computeTradeRiskBalance(mode, sourceRow) {
-  const eq = getEquityCurve();
-  if (mode === 'edit' && sourceRow != null) {
-    const pt = eq.points.find((p) => p.sourceRow === sourceRow);
-    if (pt) return pt.equity - pt.pnl;
-  }
-  return eq.endingBalance;
-}
-
 /* ============================================================
    FORM FIELD RENDERING
    ============================================================ */
 // Renders the value + attributes for a read-only calculated field. Kept
 // separate from renderFormField so the exact same markup can be rebuilt live
 // as the person edits P&L (see wireCalculatedFieldSync).
+const MECHANICS_CALC_LABELS = {
+  tradeAmount: (v, basis) => ({ text: fmtMoney(v.tradeAmount), hint: `= ${fmtMoney(basis.prevTradeAcctBalance)} trade acct balance × ${fmtPct(basis.prevRiskPct)} risk` }),
+  riskNextTrade: (v, basis) => ({ text: fmtPct(v.riskNextTrade), hint: `${fmtPct(basis.config.baseRiskPct)} base, scaled by growth milestones` }),
+  tradeAcctBalance: (v) => ({ text: fmtMoney(v.tradeAcctBalance), hint: 'account balance − holding balance' }),
+  toHolding: (v) => ({ text: v.toHolding == null ? '—' : fmtMoney(v.toHolding), hint: 'moved to Holding from this trade' }),
+  holdingBalance: (v) => ({ text: fmtMoney(v.holdingBalance), hint: 'running Holding account total' }),
+  toTradeAcct: (v) => ({ text: v.toTradeAcct == null ? '—' : fmtMoney(v.toTradeAcct), hint: 'pulled back from Holding to cover a loss' }),
+  accountBalance: (v) => ({ text: fmtMoney(v.accountBalance), hint: 'previous balance + this trade\u2019s P&L' }),
+  accountGrowth: (v) => ({ text: fmtPct(v.accountGrowth, { plus: true }), hint: 'vs. starting balance' }),
+};
+
 function renderCalcBox(spec, existingRecord, ctx) {
-  if (spec.calcType === 'tradeRisk') {
-    const balance = ctx.tradeRiskBalance;
-    const value = balance * TRADE_RISK_PCT;
-    return `<div class="calc-box" data-field="${esc(spec.header)}" data-calc-type="tradeRisk" data-calc-value="${value}">
-      ${fmtMoney(value)}
-      <span class="calc-hint">= ${fmtMoney(balance)} balance × ${(TRADE_RISK_PCT * 100).toFixed(0)}%</span>
-    </div>`;
-  }
+  const basis = ctx.mechBasis;
   if (spec.calcType === 'pnlPct') {
-    const balance = ctx.tradeRiskBalance;
+    const balance = basis.prevTradeAcctBalance;
     const pnlRaw = existingRecord ? existingRecord[state.dataset.meta.pnlField] : null;
     const pnl = typeof pnlRaw === 'number' ? pnlRaw : (pnlRaw != null ? Number(pnlRaw) : null) || 0;
     const pct = balance ? pnl / balance : 0;
     return `<div class="calc-box" data-field="${esc(spec.header)}" data-calc-type="pnlPct" data-calc-value="${pct}" data-pct-balance="${balance}">
       ${fmtPct(pct, { plus: true })}
-      <span class="calc-hint">= P&amp;L ÷ ${fmtMoney(balance)} balance</span>
+      <span class="calc-hint">= P&amp;L ÷ ${fmtMoney(balance)} trade acct balance</span>
+    </div>`;
+  }
+  if (MECHANICS_CALC_LABELS[spec.calcType]) {
+    const pnlRaw = existingRecord ? existingRecord[state.dataset.meta.pnlField] : null;
+    const pnl = typeof pnlRaw === 'number' ? pnlRaw : (pnlRaw != null ? Number(pnlRaw) : null);
+    const computed = computeMechanicsPreview(basis, pnl);
+    const { text, hint } = MECHANICS_CALC_LABELS[spec.calcType](computed, basis);
+    return `<div class="calc-box" data-field="${esc(spec.header)}" data-calc-type="${spec.calcType}" data-calc-value="${computed[spec.calcType]}">
+      ${text}
+      <span class="calc-hint">${esc(hint)}</span>
     </div>`;
   }
   return `<div class="calc-box" data-field="${esc(spec.header)}" data-calc-value="0">—</div>`;
@@ -3423,7 +3835,7 @@ function openTradeForm(mode, sourceRow) {
   const existing = mode === 'edit' ? state.dataset.records.find((r) => r._sourceRow === sourceRow) : null;
   if (mode === 'edit' && !existing) return;
   const specs = getFormFieldSpecs();
-  const ctx = { tradeRiskBalance: computeTradeRiskBalance(mode, sourceRow) };
+  const ctx = { mechBasis: computeAccountMechanicsBasis(mode, sourceRow) };
 
   // In-memory state for image fields (paste/upload), since an <img> preview
   // isn't a normal form input with a `.value`. Seed it with whatever image
@@ -3471,7 +3883,7 @@ function openTradeForm(mode, sourceRow) {
   });
 
   wireImageFields(overlay, imageState);
-  wireCalculatedFieldSync(overlay);
+  wireCalculatedFieldSync(overlay, ctx);
 
   document.getElementById('cancelTradeForm').addEventListener('click', closeOverlay);
   document.getElementById('saveTradeForm').addEventListener('click', () => {
@@ -3533,18 +3945,38 @@ function compressImageToDataUrl(blob, maxDim, quality) {
 // Keeps any calculated field that depends on the P&L input in sync as the
 // person types — currently just P&L %, which is always P&L relative to the
 // same balance-before-this-trade basis Trade Risk uses.
-function wireCalculatedFieldSync(overlay) {
+function wireCalculatedFieldSync(overlay, ctx) {
   const m = state.dataset.meta;
   if (!m.pnlField) return;
   const pnlInput = overlay.querySelector(`[data-field="${CSS.escape(m.pnlField)}"]`);
+  if (!pnlInput) return;
   const pctBox = overlay.querySelector('[data-calc-type="pnlPct"]');
-  if (!pnlInput || !pctBox) return;
-  const balance = Number(pctBox.dataset.pctBalance) || 0;
+  const pctBalance = pctBox ? Number(pctBox.dataset.pctBalance) || 0 : 0;
+
+  const mechBoxes = {};
+  Object.keys(MECHANICS_CALC_LABELS).forEach((calcType) => {
+    const box = overlay.querySelector(`[data-calc-type="${calcType}"]`);
+    if (box) mechBoxes[calcType] = box;
+  });
+
   pnlInput.addEventListener('input', () => {
-    const pnl = Number(pnlInput.value) || 0;
-    const pct = balance ? pnl / balance : 0;
-    pctBox.dataset.calcValue = pct;
-    pctBox.innerHTML = `${fmtPct(pct, { plus: true })}<span class="calc-hint">= P&amp;L ÷ ${fmtMoney(balance)} balance</span>`;
+    const raw = pnlInput.value.trim();
+    const pnl = raw === '' ? null : Number(raw);
+
+    if (pctBox) {
+      const pct = pctBalance ? (pnl || 0) / pctBalance : 0;
+      pctBox.dataset.calcValue = pct;
+      pctBox.innerHTML = `${fmtPct(pct, { plus: true })}<span class="calc-hint">= P&amp;L ÷ ${fmtMoney(pctBalance)} trade acct balance</span>`;
+    }
+
+    if (Object.keys(mechBoxes).length) {
+      const computed = computeMechanicsPreview(ctx.mechBasis, Number.isFinite(pnl) ? pnl : null);
+      for (const [calcType, box] of Object.entries(mechBoxes)) {
+        const { text, hint } = MECHANICS_CALC_LABELS[calcType](computed, ctx.mechBasis);
+        box.dataset.calcValue = computed[calcType];
+        box.innerHTML = `${text}<span class="calc-hint">${esc(hint)}</span>`;
+      }
+    }
   });
 }
 
@@ -3734,6 +4166,7 @@ function reconcileSetupFieldSelections() {
 
 function afterMutation() {
   recomputeDatasetMeta(state.dataset);
+  recomputeAccountMechanicsValues(state.dataset);
   reconcileSetupFieldSelections();
   state.hasManualEdits = true;
   persistWorkingState();
@@ -3791,6 +4224,7 @@ function buildPersistPayload(opts) {
     savedAt: new Date().toISOString(),
     sourceMeta: { mode: state.sourceMeta.mode, fileName: state.sourceMeta.fileName },
     startingBalanceOverride: state.startingBalanceOverride,
+    accountMechanicsConfig: state.accountMechanicsConfig,
     dataset: { meta: state.dataset.meta, records },
   };
 }

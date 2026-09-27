@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Bar Replay Dashboard — local launcher.
+Crypto Trading Dashboard — local launcher.
 
 Serves this folder over http://localhost so the dashboard can auto-detect
 changes to the workbook in data/ and refresh itself live. No third-party
@@ -10,7 +10,7 @@ Usage:
     python3 server.py            (Windows: double-click, or "py server.py")
 
 Then keep this window open and use the dashboard in your browser. Edit and
-save data/35A - Bar Replay.xlsx (keep the same file name) and the page will
+save data/35A_Dynamic_Stats.xlsx (keep the same file name) and the page will
 pick up the change automatically within a few seconds.
 
 Press Ctrl+C to stop the server.
@@ -58,11 +58,11 @@ def main():
     httpd.daemon_threads = True
 
     print("=" * 60)
-    print(" Bar Replay — Setup Research Dashboard")
+    print(" Crypto Trading Dashboard")
     print("=" * 60)
     print(f" Serving:  {DIRECTORY}")
     print(f" URL:      {url}")
-    print(" Live refresh: edit data/35A - Bar Replay.xlsx and save —")
+    print(" Live refresh: edit data/35A_Dynamic_Stats.xlsx and save —")
     print("               the dashboard will pick it up automatically.")
     print(" Press Ctrl+C to stop.")
     print("=" * 60)

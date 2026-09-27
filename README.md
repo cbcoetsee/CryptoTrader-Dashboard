@@ -1,13 +1,13 @@
 # Crypto Trading Dashboard
 
-A local, offline-first research dashboard for the `35A - Bar Replay.xlsx` trade
+A local, offline-first research dashboard for the `35A_Dynamic_Stats.xlsx` trade
 journal. Everything runs in your browser — no data ever leaves your device,
 and no internet connection is required.
 
 ## Quick start (offline, no setup)
 
 Just double-click **`index.html`**. It opens in your default browser with the
-workbook's data already built in, ready to explore — including the ~39 chart
+workbook's data already built in, ready to explore — including the ~55 chart
 screenshots already pasted into the workbook's own CHART column, which live
 alongside `index.html` in `data/charts/`. This works with no installation,
 no server, and no internet connection (see "What's in this folder" for the
@@ -19,26 +19,29 @@ machine — the file is never uploaded anywhere.
 
 ## Adding, editing, and deleting trades
 
-The Trade Ledger tab has an **+ Add Trade** button that opens a form built
-from the workbook's own fields, in the order a trader actually fills them
-in: Date, then a live-calculated **Trade Risk** figure, then the setup
-criteria, then the result fields (Profit Passed 1:3RR, P/L/BE, P&L, P&L %,
-Chart) grouped together at the end. Fields like Day of Week, Token, Trend
-Break, and the Fibonacci wave levels show up as actual `<select>` dropdowns
-with the exact choices from the source workbook's data validation (e.g. Day
-of Week is always MON–SUN, Trend Break is always Yes/No), the same way
-they'd appear as dropdowns in Excel. Fields without a workbook dropdown offer
+An **Add Trade** button is available from any tab — in the top bar next to
+Import — as well as at the top of the Trade Ledger. Either one opens a form
+built from the workbook's own fields, in the order a trader actually fills
+them in: Date, then the three position-sizing fields (Trade Amount, Risk
+Next Trade, Trade Acct Balance — see "Dynamic position sizing" below), then
+the setup criteria, then the result fields (Profit Passed 1:3RR, P/L/BE,
+P&L, P&L%, Chart), then the five account-tracking fields, grouped together
+at the end. Fields like Day of Week, Token, Trend Break, and the Fibonacci
+wave levels show up as actual `<select>` dropdowns with the exact choices
+from the source workbook's data validation (e.g. Day of Week is always
+MON–SUN, Trend Break is always Yes/No), the same way they'd appear as
+dropdowns in Excel. Fields without a workbook dropdown offer
 your dashboard's existing values as suggestions plus an "Other…" option for
 something new.
 
-**Trade Risk** is calculated automatically as 2% of the relevant account
-balance — the current overall ending balance when adding a new trade, or the
-balance that existed immediately before that specific trade when editing an
-existing one (so it stays historically accurate). It's read-only; whatever
-value is shown gets snapshotted onto the trade when you save. **P&L %**
-works the same way — it's always P&L relative to that same balance, so it
-recalculates live as you type a P&L value rather than needing to be entered
-separately.
+**Trade Amount, Risk Next Trade, Trade Acct Balance,** and the five
+account-tracking fields are all calculated automatically — see "Dynamic
+position sizing and the Holding account" below for exactly how. All are
+read-only; whatever values are shown get snapshotted onto the trade when you
+save. **P&L %** works similarly — it's always P&L relative to your Trade
+Acct Balance (not your total balance, since money in Holding isn't capital
+you're actually trading with), so it recalculates live as you type a P&L
+value rather than needing to be entered separately.
 
 **Chart** lets you paste a screenshot directly (Ctrl/Cmd+V while the field is
 focused), drag a file onto it, or click to browse — no separate upload step.
@@ -78,6 +81,38 @@ within that session, your edits just won't survive a refresh. Running via
 `server.py` (below) sidesteps this entirely, since it gives the page a normal
 `http://localhost` address.
 
+## Dynamic position sizing and the Holding account
+
+Your workbook sizes each trade and protects profits automatically, and the
+dashboard replicates that logic exactly (validated against your sheet's own
+formulas, trade for trade) rather than reading static numbers from it — so it
+keeps working correctly for trades you add through the app, and responds
+live to the settings below.
+
+**In the Add/Edit Trade form**, right after Date you'll see three
+auto-calculated fields: **Trade Amount** (this trade's position size),
+**Risk Next Trade** (the % used to size it), and **Trade Acct Balance** (the
+capital that % is applied to — your total balance *minus* whatever's
+currently in Holding). After the Chart field, five more calculated fields
+track the account-level effects: **To Holding**, **Holding Balance**, **To
+Trade Acct**, **Account Balance**, and **Account Growth %**. All eight are
+read-only and recalculate live as you type a P&L value.
+
+**Risk scales up as your account grows** — every full 100% of growth adds
+another step to your base risk. **Profits get partially secured** into a
+separate Holding account at 150% and 200% growth milestones, plus an ongoing
+skim of each win beyond that; a loss pulls money back from Holding to cover
+it, up to what's available there.
+
+**On the Equity & Drawdown tab**, a new **Position Sizing & Holding Rules**
+card lets you adjust every parameter (base risk, the growth step, both
+milestones, and the ongoing skim %) — defaults match your workbook exactly.
+Changing a setting recalculates Trade Amount, Risk, and every Holding
+transfer for your *entire* trade history as a "what if" view; it never
+rewrites your original workbook. The equity chart itself now shows **Trade
+Account** and **Holding Account** as two stacked areas instead of one line,
+so you can see the split alongside the total balance at every point.
+
 ## Configurable starting balance
 
 The Equity & Drawdown tab has a **Starting Balance** field at the top. By
@@ -112,7 +147,7 @@ Requires Python 3 — no extra packages, only the standard library.)
 
 This starts a small local web server (`http://localhost:8420` or the next
 free port) and opens the dashboard in your browser automatically. While it's
-running, edit and save **`data/35A - Bar Replay.xlsx`** (keep the same file
+running, edit and save **`data/35A_Dynamic_Stats.xlsx`** (keep the same file
 name) and the dashboard will detect the change and refresh itself within a
 few seconds — no manual re-upload, no page reload. The status bar shows a
 "Live server" indicator and the file it's watching while this mode is active.
@@ -135,11 +170,11 @@ server.py            Optional local launcher for the live auto-refresh mode.
 MASTER_PROMPT.md      The full specification this dashboard was built from —
                       hand this to an AI assistant to regenerate or extend it.
 data/
-  35A - Bar Replay.xlsx   A copy of the workbook, used only by server.py for
+  35A_Dynamic_Stats.xlsx  A copy of the workbook, used only by server.py for
                           live-refresh polling. Editing this file (in server
                           mode) is what triggers an auto-refresh.
   manifest.json           Tells the dashboard which file in data/ to watch.
-  charts/                 ~39 chart screenshots already pasted into the
+  charts/                 ~55 chart screenshots already pasted into the
                           workbook's CHART column, extracted as individual
                           image files so index.html doesn't have to embed
                           ~15MB of images inline. index.html references
@@ -178,12 +213,12 @@ exactly those trades.
 
 **Trade Ledger** — every trade, with full-text search, per-factor filters, an
 outcome filter, and a date range. Click any row for a detail panel with every
-source field, grouped into Setup Criteria / Result / Chart / Other, plus
-calculated context (cumulative P&L to that point, running balance, Trade
-Risk, and the trade's rank by P&L) — and buttons to edit or delete that
-trade. Add new trades, browse attached charts, or clear the whole ledger from
-the buttons at the top of this tab (see "Adding, editing, and deleting
-trades" above).
+source field, grouped into Setup Criteria / Result / Account Tracking /
+Chart / Other, plus calculated context (cumulative P&L to that point,
+running balance, and the trade's rank by P&L) — and buttons to edit or
+delete that trade. Add new trades, browse attached charts, or clear the
+whole ledger from the buttons at the top of this tab (see "Adding, editing,
+and deleting trades" above).
 
 **Equity & Drawdown** — a configurable starting balance, plus a running
 equity curve and drawdown chart built from chronological, usable trades
