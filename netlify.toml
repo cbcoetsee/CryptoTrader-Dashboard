@@ -1,0 +1,17 @@
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# The edge function's own file (netlify/edge-functions/auth-gate.js) declares
+# its path inline via `export const config`, which is all that's needed for
+# a single edge function — no separate [[edge_functions]] block required.
+
+# Never let the browser cache a stale copy of the app shell or the shared
+# trade data — every device should always see the latest.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
