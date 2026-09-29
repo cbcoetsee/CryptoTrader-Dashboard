@@ -1361,25 +1361,48 @@ function isImageValue(v) {
   return /\.(png|jpe?g|gif|webp|bmp)$/i.test(v.trim());
 }
 
-function classifyColumns(headers, records, { pnlField, outcomeField, dateField }) {
+function classifyColumns(headers, records, { pnlField, outcomeField, dateField, existingColumns }) {
+  const byHeader = existingColumns ? new Map(existingColumns.map((c) => [c.header, c])) : null;
   return headers.map((h) => {
+    const prev = byHeader ? byHeader.get(h) : null;
     const values = records.map((r) => r[h]);
     const nonBlankVals = values.filter((v) => v != null);
     const numericVals = nonBlankVals.filter((v) => typeof v === 'number' || (typeof v === 'string' && parseNumericLoose(v) != null));
     const numericRatio = nonBlankVals.length ? numericVals.length / nonBlankVals.length : 0;
-    const isDateCol = h === dateField || nonBlankVals.some((v) => v instanceof Date);
-    const isImageColumn = nonBlankVals.some((v) => isImageValue(v));
+    const isImageColumn = prev ? prev.type === 'image' : nonBlankVals.some((v) => isImageValue(v));
     const distinct = new Set(nonBlankVals.map((v) => (v instanceof Date ? v.toISOString().slice(0, 10) : String(v).trim())));
-    // Low-cardinality fields behave like categorical setup criteria even when
-    // stored as numbers (e.g. Fibonacci levels, leverage tiers) — only treat
-    // as a continuous numeric field once it has enough distinct values to not
-    // be a meaningful "factor".
-    const isNumericContinuous = numericRatio >= 0.7 && distinct.size > 12;
-    const type = isDateCol ? 'date' : (isImageColumn ? 'image' : (isNumericContinuous ? 'numeric' : 'categorical'));
-    const metricLike = isMetricLikeHeader(h, pnlField, outcomeField, dateField) || isImageColumn;
-    const isFactorCandidate = !metricLike && type === 'categorical' && distinct.size >= 2 &&
-      distinct.size <= Math.max(2, Math.min(20, Math.ceil(records.length * 0.9))) &&
-      nonBlankVals.length >= Math.max(2, records.length * 0.3);
+
+    let type, isFactorCandidate, metricLike;
+    if (prev) {
+      // Structural classification (type, factor-candidacy, metric-likeness)
+      // is decided once — from the dataset's actual data at import/reset/
+      // cloud-load time — and preserved across ordinary mutations from then
+      // on, the same way pnlField/dateField/outcomeField already are below.
+      // Re-deriving it from whatever records currently happen to exist was
+      // the bug: clearing the ledger to zero rows makes every categorical
+      // column's distinct-value count drop to zero, which used to silently
+      // reclassify every setup-criteria field as "not a factor" the moment
+      // the ledger was emptied, even though the schema hadn't changed at all.
+      type = prev.type;
+      isFactorCandidate = prev.isFactorCandidate;
+      metricLike = prev.isMetricLike;
+    } else {
+      // No previous entry — a header that didn't exist before this mutation
+      // (e.g. a brand-new synthetic field). Classify it fresh, same as a
+      // first import would.
+      const isDateCol = h === dateField || nonBlankVals.some((v) => v instanceof Date);
+      // Low-cardinality fields behave like categorical setup criteria even
+      // when stored as numbers (e.g. Fibonacci levels, leverage tiers) —
+      // only treat as a continuous numeric field once it has enough distinct
+      // values to not be a meaningful "factor".
+      const isNumericContinuous = numericRatio >= 0.7 && distinct.size > 12;
+      type = isDateCol ? 'date' : (isImageColumn ? 'image' : (isNumericContinuous ? 'numeric' : 'categorical'));
+      metricLike = isMetricLikeHeader(h, pnlField, outcomeField, dateField) || isImageColumn;
+      isFactorCandidate = !metricLike && type === 'categorical' && distinct.size >= 2 &&
+        distinct.size <= Math.max(2, Math.min(20, Math.ceil(records.length * 0.9))) &&
+        nonBlankVals.length >= Math.max(2, records.length * 0.3);
+    }
+
     return {
       header: h,
       type,
@@ -1399,13 +1422,15 @@ function classifyColumns(headers, records, { pnlField, outcomeField, dateField }
  * Re-derive computed fields + column classification after records have been
  * mutated in place (add/edit/delete/clear a trade). Schema-level facts
  * (which field is the P&L field, the date field, the workbook's dropdown
- * lists, etc.) are left untouched — only counts, distinct values, and
- * per-record derived fields are refreshed.
+ * lists, which columns are setup-criteria factors, etc.) are left untouched
+ * — only counts, distinct values, and per-record derived fields are
+ * refreshed. Passing the dataset's existing columns into classifyColumns is
+ * what makes that possible; see the comment inside it for why that matters.
  */
 function recomputeDatasetMeta(dataset) {
-  const { headers, pnlField, outcomeField, dateField, weekdayField } = dataset.meta;
+  const { headers, pnlField, outcomeField, dateField, weekdayField, columns: existingColumns } = dataset.meta;
   for (const rec of dataset.records) computeRowDerived(rec, { pnlField, dateField, weekdayField });
-  const columns = classifyColumns(headers, dataset.records, { pnlField, outcomeField, dateField });
+  const columns = classifyColumns(headers, dataset.records, { pnlField, outcomeField, dateField, existingColumns });
   dataset.meta = {
     ...dataset.meta,
     recordCount: dataset.records.length,
