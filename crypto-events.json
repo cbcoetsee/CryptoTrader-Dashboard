@@ -1,0 +1,6 @@
+{
+  "_help": "Scheduled crypto events (ETF decisions, listings, unlocks). Edit on github.com and commit. Time is SAST (UTC+2). They appear on the Alert Strip 60 min before. Delete old ones whenever you like.",
+  "events": [
+    { "name": "Example: SEC decision on SOL spot ETF", "coin": "SOL", "time": "2026-12-31 14:00" }
+  ]
+}
