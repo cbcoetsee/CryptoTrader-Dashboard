@@ -2,6 +2,7 @@
 // Stores everything in Netlify Blobs (store "news", key "state").
 import { getStore } from "@netlify/blobs";
 import { poll, emptyState } from "../news-lib/engine.mjs";
+import cryptoEvents from "../../crypto-events.json";   // bundled at deploy time
 
 const io = {
   async json(url) {
@@ -25,7 +26,7 @@ export default async () => {
   const store = getStore("news");
   const state = (await store.get("state", { type: "json" })) || emptyState();
   const env = {
-    SITE_URL: process.env.URL,                         // set by Netlify automatically
+    CRYPTO_EVENTS: cryptoEvents,                       // your scheduled crypto events
     FINNHUB_API_KEY: process.env.FINNHUB_API_KEY,      // optional: actual values
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,  // optional: LLM notes
     ANTHROPIC_MODEL: process.env.ANTHROPIC_MODEL,

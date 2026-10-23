@@ -1,6 +1,6 @@
 # News Alert Dashboard: README
 
-**Version:** 1.1, 2026-10-23. Built into the main dashboard (`index.html`).
+**Version:** 1.2, 2026-10-23. Built into the main dashboard (`index.html`).
 **Spec:** `news-alert-dashboard-spec.md` (project)
 **What it adds to the 35A dashboard:**
 - **Alert Strip:** high-impact UK/US/EU events, 60 min before release, max 3 + "+N more", plus breaking crypto news.
@@ -11,6 +11,7 @@
 ## Changelog
 | Version | Change |
 |---|---|
+| 1.2 | Fix: `crypto-events.json` is now **built into the poller at deploy time** instead of being downloaded from the site. On a password-protected site that download failed with `401` ("1 source issue"). After you edit the file on github.com, the commit redeploys the site and the new events are picked up. |
 | 1.1 | Built into the 35A dashboard: Alert Strip under the status bar (stays visible while you scroll), a new **News & Events** tab with a risk-count badge, dashboard colours, and coins read from the dashboard's TOKEN column (new coins switch on automatically). The widget is a single script (`news-widget.bundle.js`) so it also loads when `index.html` is opened from your computer; the News tab then asks once for your Netlify site address. The API allows that read (CORS). |
 | 1.0 | Netlify Functions + Blobs backend, standalone `news.html`. |
 
@@ -27,7 +28,7 @@
 | `news/news-widget.bundle.js` | **What the pages load**: one ordinary script (widget + core). It's built from `news-widget.js` + `core.mjs`; edit those, not the bundle. |
 | `news/news-widget.js`, `news/news-widget.css` | Widget source and styles. With `NEWS_WIDGET = { embed: true }` it uses the dashboard's colours and coins. |
 | `news.html` | Optional standalone page with everything on it: `yoursite.netlify.app/news.html` |
-| `crypto-events.json` | **Your** scheduled crypto events (ETF decisions, listings). Edit it on github.com. |
+| `crypto-events.json` | **Your** scheduled crypto events (ETF decisions, listings). Edit it on github.com and commit. Netlify redeploys and the poller picks them up (it's built in, not downloaded). |
 
 ## Install (GitHub web upload, no git needed)
 1. Unzip `news-alert-dashboard.zip` on your computer.
@@ -75,3 +76,5 @@ The poller runs 720 times a day (about 22,000 a month). The page asks for new da
 - Your manual actuals, coin ticks and theme are saved in **this browser** only.
 - The dashboard is dark-only, so the embedded News section follows that (the standalone `news.html` keeps Auto/Dark/Light).
 - If you later change `index.html` in another session, keep the 6 `News Alert` additions (search for the comment).
+- **Password-protected site:** the dashboard on Netlify works normally, because you're logged in. A copy of `index.html` opened from your computer can't read the protected `/api/news`, so use the Netlify site for live news.
+- **"⚠ source issue":** hover over it to see which feed failed. Errors clear on their own at the next successful run (every 2 min).

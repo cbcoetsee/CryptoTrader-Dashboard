@@ -33,9 +33,11 @@ export async function poll(state, now, io, env = {}) {
       }
     } catch (e) { s.errors.calendar = String(e.message || e); }
   }
-  if (env.SITE_URL) {
+  // Your scheduled crypto events: crypto-events.json is built into the poller at deploy time
+  // (no web request, so it also works on a password-protected site). Edit + commit → Netlify redeploys.
+  if (env.CRYPTO_EVENTS) {
     try {
-      const crypto = parseCryptoEvents(await io.json(env.SITE_URL.replace(/\/$/, "") + "/crypto-events.json"));
+      const crypto = parseCryptoEvents(env.CRYPTO_EVENTS);
       s.events = s.events.filter(e => e.kind !== "crypto").concat(crypto);
     } catch (e) { s.errors.cryptoEvents = String(e.message || e); }
   }
